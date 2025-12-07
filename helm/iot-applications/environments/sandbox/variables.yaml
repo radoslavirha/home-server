@@ -1,0 +1,3 @@
+VAR_PROTOCOL: http
+VAR_PUBLIC_DOMAIN: server.home
+VAR_SUBDOMAIN: sandbox

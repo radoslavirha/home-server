@@ -1,0 +1,20 @@
+{{- range $applicationName, $application := .Values.apps -}}
+{{- if $application.jinja2.templates }}
+{{- range $templateName, $template := $application.jinja2.templates -}}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: jinja2-{{ $application.labels.component }}-{{ $application.labels.partOf }}-{{ $applicationName }}-{{ $templateName }}-configmap
+  labels:
+    app.kubernetes.io/name: {{ $applicationName }}
+    app.kubernetes.io/version: {{ $application.image.tag }}
+    app.kubernetes.io/component: {{ $application.labels.component }}
+    app.kubernetes.io/part-of: {{ $application.labels.partOf }}
+    app.kubernetes.io/environment: {{ $.Release.Namespace }}
+data:
+  {{ $template.file }}: |-
+    {{- $.Files.Get $template.template | nindent 6 }}
+{{ end }}
+{{ end }}
+{{ end }}

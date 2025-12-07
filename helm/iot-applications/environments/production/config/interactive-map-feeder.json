@@ -1,0 +1,7 @@
+{
+    "serviceName": "{{ APPLICATION }}",
+    "server": {
+        "httpPort": "{{ CONTAINER_PORT }}"
+    },
+    "publicURL": "{{ VAR_PROTOCOL }}://{{ COMPONENT }}.{{ VAR_PUBLIC_DOMAIN }}/{{ APPLICATION_GROUP }}/{{ APPLICATION }}"
+}

@@ -1,0 +1,22 @@
+{{- range $applicationName, $application := .Values.apps -}}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $application.labels.component }}-{{ $application.labels.partOf }}-{{ $applicationName }}
+  labels:
+    app.kubernetes.io/name: {{ $applicationName }}
+    app.kubernetes.io/version: {{ $application.image.tag }}
+    app.kubernetes.io/component: {{ $application.labels.component }}
+    app.kubernetes.io/part-of: {{ $application.labels.partOf }}
+    app.kubernetes.io/environment: {{ $.Release.Namespace }}
+spec:
+  type: ClusterIP
+  selector:
+    app: {{ $application.labels.component }}-{{ $application.labels.partOf }}-{{ $applicationName }}
+  ports:
+    - name: {{ $application.labels.component }}-{{ $application.labels.partOf }}-{{ $applicationName }}
+      protocol: TCP
+      port: 80
+      targetPort: {{ $application.service.targetPort }}
+{{ end }}

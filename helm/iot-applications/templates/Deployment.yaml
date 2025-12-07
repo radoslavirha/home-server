@@ -1,0 +1,88 @@
+{{- range $applicationName, $application := .Values.apps -}}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $application.labels.component }}-{{ $application.labels.partOf }}-{{ $applicationName }}
+  labels:
+    app.kubernetes.io/name: {{ $applicationName }}
+    app.kubernetes.io/version: {{ $application.image.tag }}
+    app.kubernetes.io/component: {{ $application.labels.component }}
+    app.kubernetes.io/part-of: {{ $application.labels.partOf }}
+    app.kubernetes.io/environment: {{ $.Release.Namespace }}
+spec:
+  replicas: {{ $application.replicas }}
+  selector:
+    matchLabels:
+      app: {{ $application.labels.component }}-{{ $application.labels.partOf }}-{{ $applicationName }}
+  template:
+    metadata:
+      labels:
+        app: {{ $application.labels.component }}-{{ $application.labels.partOf }}-{{ $applicationName }}
+    spec:
+      {{- if $application.jinja2.templates }}
+      initContainers:
+        {{- /* Loop all the Jinja2 templates, container can process only one template */}}
+        {{- range $templateName, $template := $application.jinja2.templates }}
+          - name: jinja-init-{{ $templateName }}
+            image: objectiflibre/jinja-init
+            env:
+              - name: VERBOSE
+                value: "1"
+              - name: JINJA_SRC_FILE
+                value: /config_src/{{ $template.file }}
+              - name: JINJA_DEST_FILE
+                value: /config/{{ $template.file }}
+              {{- /* Prepare VARS for substitution */}}
+              {{- range $key, $value := $.Values }}
+              {{- if or (hasPrefix "VAR_" $key) (hasPrefix "SECRET_" $key) }}
+              - name: JINJA_VAR_{{ $key }}
+                value: "{{ $value }}"
+              {{- end }}
+              {{- end }}
+              - name: JINJA_VAR_APPLICATION
+                value: "{{ $applicationName }}"
+              - name: JINJA_VAR_COMPONENT
+                value: "{{ $application.labels.component }}"
+              - name: JINJA_VAR_APPLICATION_GROUP
+                value: "{{ $application.labels.partOf }}"
+              - name: JINJA_VAR_CONTAINER_PORT
+                value: "{{ $application.service.targetPort }}"
+              - name: JINJA_VAR_NAMESPACE
+                value: "{{ $.Release.Namespace }}"
+            volumeMounts:
+              {{- /* Volume with config template */}}
+              - name: jinja2-input-{{ $application.labels.component }}-{{ $application.labels.partOf }}-{{ $applicationName }}-{{ $templateName }}-volume
+                mountPath: /config_src
+              {{- /* Volume with substituted config file */}}
+              - name: jinja2-output-{{ $application.labels.component }}-{{ $application.labels.partOf }}-{{ $applicationName }}-{{ $templateName }}-volume
+                mountPath: /config
+        {{- end }}
+      {{- end }}
+      containers:
+        - name: {{ $application.labels.component }}-{{ $application.labels.partOf }}-{{ $applicationName }}
+          image: {{ $application.image.repository }}:{{ $application.image.tag }}
+          ports:
+            - containerPort: {{ $application.service.targetPort }}
+          imagePullPolicy: {{ $application.image.pullPolicy }}
+          {{- if $application.jinja2.templates }}
+          volumeMounts:
+            {{- /* Add volumes with substituted config files from Jinja2 container */}}
+            {{- range $templateName, $template := $application.jinja2.templates }}
+            - name: jinja2-output-{{ $application.labels.component }}-{{ $application.labels.partOf }}-{{ $applicationName }}-{{ $templateName }}-volume
+              mountPath: {{ $template.path }}
+            {{- end }}
+          {{- end }}
+      {{- if $application.jinja2.templates }}
+      volumes:
+        {{- range $templateName, $template := $application.jinja2.templates }}
+          {{- /* connect configmap with loaded jinja2 template */}}
+          - name: jinja2-input-{{ $application.labels.component }}-{{ $application.labels.partOf }}-{{ $applicationName }}-{{ $templateName }}-volume
+            configMap:
+              name: jinja2-{{ $application.labels.component }}-{{ $application.labels.partOf }}-{{ $applicationName }}-{{ $templateName }}-configmap
+          {{- /* prepare volume for jinja2 output */}}
+          - name: jinja2-output-{{ $application.labels.component }}-{{ $application.labels.partOf }}-{{ $applicationName }}-{{ $templateName }}-volume
+            emptyDir:
+        {{- end }}
+      {{- end }}
+{{- end }}

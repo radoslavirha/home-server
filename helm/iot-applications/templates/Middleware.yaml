@@ -1,0 +1,19 @@
+{{- range $applicationName, $application := .Values.apps -}}
+{{- if or $application.ingress.enabled }}
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: {{ $application.labels.component }}-{{ $application.labels.partOf }}-{{ $applicationName }}-stripprefix
+  labels:
+    app.kubernetes.io/name: {{ $applicationName }}
+    app.kubernetes.io/version: {{ $application.image.tag }}
+    app.kubernetes.io/component: {{ $application.labels.component }}
+    app.kubernetes.io/part-of: {{ $application.labels.partOf }}
+    app.kubernetes.io/environment: {{ $.Release.Namespace }}
+spec:
+  stripPrefix:
+    prefixes:
+      - /{{ $application.labels.partOf }}/{{ $applicationName }}
+{{- end -}}
+{{- end -}}

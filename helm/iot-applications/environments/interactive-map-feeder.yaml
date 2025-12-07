@@ -1,0 +1,20 @@
+apps:
+  interactive-map-feeder:
+    replicas: 1
+    image:
+      repository: radoslavirha/interactive-map-feeder
+      tag: latest
+      pullPolicy: Always
+      # pullPolicy: IfNotPresent
+    labels:
+      component: api
+      partOf: iot
+    service:
+      targetPort: 4000
+    ingress:
+      enabled: true
+    jinja2:
+      templates:
+        config:
+          path: /home/app/config
+          file: production.json
