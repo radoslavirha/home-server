@@ -1,0 +1,16 @@
+persistence:
+  type: pvc
+  enabled: true
+
+admin:
+  existingSecret: grafana-auth
+
+service:
+  port: 80
+
+ingress:
+  enabled: false
+
+# datasources:
+
+# grafana.ini:

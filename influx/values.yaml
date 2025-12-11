@@ -1,0 +1,14 @@
+fullnameOverride: influxdb
+
+adminUser:
+  organization: home-server
+  existingSecret: influxdb-auth
+
+service:
+  port: 80
+
+ingress:
+  enabled: false
+
+persistence:
+  enabled: true
