@@ -14,19 +14,9 @@ spec:
     - name: traefik-gateway
       namespace: traefik
   hostnames:
-    - db.server.home
+    - influx.server.home
   rules:
-    - matches:
-        - path:
-            type: PathPrefix
-            value: /influx
-      backendRefs:
+    - backendRefs:
         - name: influxdb
           namespace: monitoring
           port: 80
-      filters:
-        - type: ExtensionRef
-          extensionRef:
-            group: traefik.io
-            kind: Middleware
-            name: influx-stripprefix

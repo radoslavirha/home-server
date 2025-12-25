@@ -8,9 +8,25 @@ admin:
 service:
   port: 80
 
+envFromSecrets:
+  - name: grafana-influx-token
+
 ingress:
   enabled: false
-
-# datasources:
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+      - name: InfluxDB
+        type: influxdb
+        access: proxy
+        url: http://influxdb.monitoring.svc.cluster.local
+        jsonData:
+          version: Flux
+          organization: home-server
+          defaultBucket: default
+          tlsSkipVerify: true
+        secureJsonData:
+          token: $INFLUX_DB_TOKEN
 
 # grafana.ini:
