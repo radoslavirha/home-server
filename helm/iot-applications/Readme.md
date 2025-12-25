@@ -14,17 +14,18 @@ apps:
 deploys app to `{{ SUBDOMAIN if defined }}.{{ apps.my-app.component }}.{{ PUBLIC_DOMAIN }}/{{ apps.my-app.applicationGroup }}/{{ my-app }}`
 
 Then you should define properties
+
 - `replicas` - how many replicas to deploy
 - `image`
-    - `repository` container registry URL to image
-    - `tag` image tag
+  - `repository` container registry URL to image
+  - `tag` image tag
 - `labels`
-    - `component` defines global application type like `api`, `ui`, `database`
-    - `partOf` defines group of applications
+  - `component` defines global application type like `api`, `ui`, `database`
+  - `partOf` defines group of applications
 - `service`
-    - `targetPort` where k8s should expect app to be running inside container. Ideal scenario is to use `CONTAINER_PORT` variable inside application template to ensure expected port and actual port in container are the same.
+  - `targetPort` where k8s should expect app to be running inside container. Ideal scenario is to use `CONTAINER_PORT` variable inside application template to ensure expected port and actual port in container are the same.
 - `ingress`
-    - `enabled` tells if ingress should be enabled
+  - `enabled` tells if ingress should be enabled
 
 Property `jinja2.templates` is dictionary of templates we want to mount into the container. `path` is path inside container where substituted template should be mounted, `file` is filename and `template` refers to template location.
 

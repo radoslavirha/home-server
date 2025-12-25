@@ -7,23 +7,43 @@
 Deploy to sandbox environment
 
 ```sh
-helm upgrade --install interactive-map-feeder-sandbox iot-applications -n sandbox -f iot-applications/environments/interactive-map-feeder.yaml -f iot-applications/environments/sandbox/interactive-map-feeder.yaml -f iot-applications/environments/sandbox/variables.yaml -f iot-applications/environments/sandbox/secrets.yaml
+helm upgrade interactive-map-feeder-sandbox iot-applications \
+    --values iot-applications/environments/interactive-map-feeder.yaml \
+    --values iot-applications/environments/sandbox/interactive-map-feeder.yaml \
+    --values iot-applications/environments/sandbox/variables.yaml \
+    --values iot-applications/environments/sandbox/secrets.yaml \
+    --namespace sandbox \
+    --install \
+    --atomic \
+    --cleanup-on-fail \
+    --timeout 2m
 ```
 
 Uninstall from sandbox environment
 
 ```sh
-helm uninstall interactive-map-feeder-sandbox -n sandbox
+helm uninstall interactive-map-feeder-sandbox \
+    --namespace sandbox
 ```
 
 Deploy to production environment
 
 ```sh
-helm upgrade --install interactive-map-feeder-production iot-applications -n production -f iot-applications/environments/interactive-map-feeder.yaml -f iot-applications/environments/production/interactive-map-feeder.yaml -f iot-applications/environments/production/variables.yaml -f iot-applications/environments/production/secrets.yaml
+helm upgrade interactive-map-feeder-production iot-applications \
+    --values iot-applications/environments/interactive-map-feeder.yaml \
+    --values iot-applications/environments/production/interactive-map-feeder.yaml \
+    --values iot-applications/environments/production/variables.yaml \
+    --values iot-applications/environments/production/secrets.yaml \
+    --namespace production \
+    --install \
+    --atomic \
+    --cleanup-on-fail \
+    --timeout 2m
 ```
 
 Uninstall from production environment
 
 ```sh
-helm uninstall interactive-map-feeder-production -n production
+helm uninstall interactive-map-feeder-production \
+    --namespace production
 ```
