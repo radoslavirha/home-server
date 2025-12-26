@@ -1,0 +1,32 @@
+## @param apps.[name] Configuration for individual applications
+## @param apps.[name].replicas Number of replicas for the application
+
+## @param apps.[name].image Configuration for the application container image
+## @param apps.[name].image.repository Container image repository
+## @param apps.[name].image.tag Container image tag
+## @param apps.[name].image.pullPolicy Container image pull policy
+
+## @param apps.[name].resources Resource requests and limits for the application container
+## @param apps.[name].resources.requests Resource requests for the application container
+## @param apps.[name].resources.requests.cpu CPU request for the application container
+## @param apps.[name].resources.requests.memory Memory request for the application container
+## @param apps.[name].resources.limits Resource limits for the application container
+## @param apps.[name].resources.limits.cpu CPU limit for the application container
+## @param apps.[name].resources.limits.memory Memory limit for the application container
+
+## @param apps.[name].labels Labels to apply to the application pods
+## @param apps.[name].labels.component Component label for the application. Serves also as subdomain for ingress.
+## @param apps.[name].labels.partOf PartOf label for the application. Serves also as base path for ingress.
+
+## @param apps.[name].service Configuration for the application service
+## @param apps.[name].service.targetPort Target port for the application service
+
+## @param apps.[name].ingress Configuration for the application ingress
+## @param apps.[name].ingress.enabled Whether to enable ingress for the application
+
+## @param apps.[name].jinja2 Configuration for Jinja2 templating
+## @param apps.[name].jinja2.templates Configuration for Jinja2 templates
+## @param apps.[name].jinja2.templates.[templateName] Configuration for a specific Jinja2 template
+## @param apps.[name].jinja2.templates.[templateName].template Path to the Jinja2 template file
+## @param apps.[name].jinja2.templates.[templateName].path Destination path for the rendered template
+## @param apps.[name].jinja2.templates.[templateName].file Destination file name for the rendered template

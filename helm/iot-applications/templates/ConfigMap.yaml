@@ -5,7 +5,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: jinja2-{{ $application.labels.component }}-{{ $application.labels.partOf }}-{{ $applicationName }}-{{ $templateName }}-configmap
+  name: {{ $application.labels.component }}-{{ $application.labels.partOf }}-{{ $applicationName }}-{{ $templateName }}-jinja2-configmap
   labels:
     app.kubernetes.io/name: {{ $applicationName }}
     app.kubernetes.io/version: {{ $application.image.tag }}

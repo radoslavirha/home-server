@@ -6,6 +6,13 @@ apps:
       tag: latest
       pullPolicy: Always
       # pullPolicy: IfNotPresent
+    resources:
+      requests:
+        cpu: 250m
+        memory: 250Mi
+      limits:
+        cpu: 500m
+        memory: 500Mi
     labels:
       component: api
       partOf: iot

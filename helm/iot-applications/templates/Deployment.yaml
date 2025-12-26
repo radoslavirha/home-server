@@ -24,7 +24,7 @@ spec:
       initContainers:
         {{- /* Loop all the Jinja2 templates, container can process only one template */}}
         {{- range $templateName, $template := $application.jinja2.templates }}
-          - name: jinja-init-{{ $templateName }}
+          - name: {{ $templateName }}-jinja2-init-container
             image: objectiflibre/jinja-init
             env:
               - name: VERBOSE
@@ -52,10 +52,10 @@ spec:
                 value: "{{ $.Release.Namespace }}"
             volumeMounts:
               {{- /* Volume with config template */}}
-              - name: jinja2-input-{{ $application.labels.component }}-{{ $application.labels.partOf }}-{{ $applicationName }}-{{ $templateName }}-volume
+              - name: {{ $application.labels.component }}-{{ $application.labels.partOf }}-{{ $applicationName }}-{{ $templateName }}-jinja2-input-volume
                 mountPath: /config_src
               {{- /* Volume with substituted config file */}}
-              - name: jinja2-output-{{ $application.labels.component }}-{{ $application.labels.partOf }}-{{ $applicationName }}-{{ $templateName }}-volume
+              - name: {{ $application.labels.component }}-{{ $application.labels.partOf }}-{{ $applicationName }}-{{ $templateName }}-jinja2-output-volume
                 mountPath: /config
         {{- end }}
       {{- end }}
@@ -65,11 +65,18 @@ spec:
           ports:
             - containerPort: {{ $application.service.targetPort }}
           imagePullPolicy: {{ $application.image.pullPolicy }}
+          resources:
+            requests:
+              cpu: {{ $application.resources.requests.cpu }}
+              memory: {{ $application.resources.requests.memory }}
+            limits:
+              cpu: {{ $application.resources.limits.cpu }}
+              memory: {{ $application.resources.limits.memory }}
           {{- if $application.jinja2.templates }}
           volumeMounts:
             {{- /* Add volumes with substituted config files from Jinja2 container */}}
             {{- range $templateName, $template := $application.jinja2.templates }}
-            - name: jinja2-output-{{ $application.labels.component }}-{{ $application.labels.partOf }}-{{ $applicationName }}-{{ $templateName }}-volume
+            - name: {{ $application.labels.component }}-{{ $application.labels.partOf }}-{{ $applicationName }}-{{ $templateName }}-jinja2-output-volume
               mountPath: {{ $template.path }}
             {{- end }}
           {{- end }}
@@ -77,12 +84,12 @@ spec:
       volumes:
         {{- range $templateName, $template := $application.jinja2.templates }}
           {{- /* connect configmap with loaded jinja2 template */}}
-          - name: jinja2-input-{{ $application.labels.component }}-{{ $application.labels.partOf }}-{{ $applicationName }}-{{ $templateName }}-volume
+          - name: {{ $application.labels.component }}-{{ $application.labels.partOf }}-{{ $applicationName }}-{{ $templateName }}-jinja2-input-volume
             configMap:
-              name: jinja2-{{ $application.labels.component }}-{{ $application.labels.partOf }}-{{ $applicationName }}-{{ $templateName }}-configmap
+              name: {{ $application.labels.component }}-{{ $application.labels.partOf }}-{{ $applicationName }}-{{ $templateName }}-jinja2-configmap
           {{- /* prepare volume for jinja2 output */}}
-          - name: jinja2-output-{{ $application.labels.component }}-{{ $application.labels.partOf }}-{{ $applicationName }}-{{ $templateName }}-volume
-            emptyDir:
+          - name: {{ $application.labels.component }}-{{ $application.labels.partOf }}-{{ $applicationName }}-{{ $templateName }}-jinja2-output-volume
+            emptyDir: {}
         {{- end }}
       {{- end }}
 {{- end }}

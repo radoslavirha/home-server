@@ -35,6 +35,6 @@ spec:
           extensionRef:
             group: traefik.io
             kind: Middleware
-            name: {{ $application.labels.component }}-{{ $application.labels.partOf }}-{{ $applicationName }}-stripprefix
+            name: {{ $application.labels.component }}-{{ $application.labels.partOf }}-{{ $applicationName }}-middleware-stripprefix
 {{- end -}}
 {{- end -}}
