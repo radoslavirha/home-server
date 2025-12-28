@@ -1,7 +1,6 @@
 apps:
   interactive-map-feeder:
     replicas: 2
-    jinja2:
-      templates:
-        config:
-          template: environments/production/config/interactive-map-feeder.json
+    templates:
+      config:
+        template: environments/production/config/interactive-map-feeder.json

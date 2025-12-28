@@ -17,11 +17,11 @@ apps:
       component: api
       partOf: iot
     service:
+      enabled: true
       targetPort: 4000
     ingress:
       enabled: true
-    jinja2:
-      templates:
-        config:
-          path: /home/app/config
-          file: production.json
+    templates:
+      config:
+        path: /home/app/config
+        file: production.json

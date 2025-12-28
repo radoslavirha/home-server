@@ -1,22 +1,20 @@
-{{- range $applicationName, $application := .Values.apps -}}
+{{- range $applicationName, $application := .Values.apps | default dict -}}
+{{- include "iot-applications.validators.service" (dict "service" $application.service "applicationName" $applicationName) }}
+{{- if $application.service.enabled }}
+{{- $ctx := dict "application" $application "name" $applicationName "release" $.Release "chart" $.Chart -}}
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ $application.labels.component }}-{{ $application.labels.partOf }}-{{ $applicationName }}
-  labels:
-    app.kubernetes.io/name: {{ $applicationName }}
-    app.kubernetes.io/version: {{ $application.image.tag }}
-    app.kubernetes.io/component: {{ $application.labels.component }}
-    app.kubernetes.io/part-of: {{ $application.labels.partOf }}
-    app.kubernetes.io/environment: {{ $.Release.Namespace }}
+  name: {{ include "iot-applications.identifier" $ctx }}
+  labels: {{ include "iot-applications.meta.labels" $ctx | nindent 4 }}
 spec:
   type: ClusterIP
-  selector:
-    app: {{ $application.labels.component }}-{{ $application.labels.partOf }}-{{ $applicationName }}
+  selector: {{ include "iot-applications.labels.selector" $ctx | nindent 4 }}
   ports:
-    - name: {{ $application.labels.component }}-{{ $application.labels.partOf }}-{{ $applicationName }}
+    - name: {{ include "iot-applications.identifier" $ctx }}
       protocol: TCP
       port: 80
-      targetPort: {{ $application.service.targetPort }}
+      targetPort: {{ include "iot-applications.defaults.port" $application.service.targetPort }}
+{{ end }}
 {{ end }}

@@ -1,17 +1,14 @@
-{{- range $applicationName, $application := .Values.apps -}}
-{{- if $application.jinja2.templates }}
-{{- range $templateName, $template := $application.jinja2.templates -}}
+{{- range $applicationName, $application := .Values.apps | default dict -}}
+{{- $ctx := dict "application" $application "name" $applicationName "release" $.Release "chart" $.Chart -}}
+{{- if $application.templates | default dict | len }}
+{{- range $templateName, $template := $application.templates | default dict -}}
+{{- include "iot-applications.validators.template" (dict "name" $templateName "template" $template "applicationName" $applicationName) }}
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ $application.labels.component }}-{{ $application.labels.partOf }}-{{ $applicationName }}-{{ $templateName }}-jinja2-configmap
-  labels:
-    app.kubernetes.io/name: {{ $applicationName }}
-    app.kubernetes.io/version: {{ $application.image.tag }}
-    app.kubernetes.io/component: {{ $application.labels.component }}
-    app.kubernetes.io/part-of: {{ $application.labels.partOf }}
-    app.kubernetes.io/environment: {{ $.Release.Namespace }}
+  name: {{ include "iot-applications.identifier" $ctx }}-tpl-{{ $templateName }}
+  labels: {{ include "iot-applications.meta.labels" $ctx | nindent 4 }}
 data:
   {{ $template.file }}: |-
     {{- $.Files.Get $template.template | nindent 6 }}

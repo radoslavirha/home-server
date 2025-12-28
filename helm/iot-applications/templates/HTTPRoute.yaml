@@ -1,40 +1,33 @@
-{{- define "subdomainPrefix" -}}
-{{- if .Values.VAR_SUBDOMAIN -}}
-{{ printf "%s." .Values.VAR_SUBDOMAIN }}
-{{- end -}}
-{{- end -}}
-{{- range $applicationName, $application := .Values.apps -}}
-{{- if or $application.ingress.enabled }}
+{{- range $applicationName, $application := .Values.apps | default dict -}}
+{{- include "iot-applications.validators.service" (dict "service" $application.service "applicationName" $applicationName) }}
+{{- include "iot-applications.validators.ingress" (dict "ingress" $application.ingress "applicationName" $applicationName) }}
+{{- if and $application.service.enabled $application.ingress.enabled }}
+{{- $ctx := dict "application" $application "name" $applicationName "release" $.Release "chart" $.Chart -}}
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: {{ $application.labels.component }}-{{ $application.labels.partOf }}-{{ $applicationName }}
-  labels:
-    app.kubernetes.io/name: {{ $applicationName }}
-    app.kubernetes.io/version: {{ $application.image.tag }}
-    app.kubernetes.io/component: {{ $application.labels.component }}
-    app.kubernetes.io/part-of: {{ $application.labels.partOf }}
-    app.kubernetes.io/environment: {{ $.Release.Namespace }}
+  name: {{ include "iot-applications.identifier" $ctx }}
+  labels: {{ include "iot-applications.meta.labels" $ctx | nindent 4 }}
 spec:
   parentRefs:
     - name: traefik-gateway
       namespace: traefik
   hostnames:
-    - {{ include "subdomainPrefix" $ }}{{ $application.labels.component }}.{{ $.Values.VAR_PUBLIC_DOMAIN }}
+    - {{ include "iot-applications.subdomain" $.Values.VAR_SUBDOMAIN }}{{ $application.labels.component }}.{{ $.Values.VAR_PUBLIC_DOMAIN }}
   rules:
     - matches:
         - path:
             type: PathPrefix
             value: /{{ $application.labels.partOf }}/{{ $applicationName }}
       backendRefs:
-        - name: {{ $application.labels.component }}-{{ $application.labels.partOf }}-{{ $applicationName }}
+        - name: {{ include "iot-applications.identifier" $ctx }}
           port: 80
       filters:
         - type: ExtensionRef
           extensionRef:
             group: traefik.io
             kind: Middleware
-            name: {{ $application.labels.component }}-{{ $application.labels.partOf }}-{{ $applicationName }}-middleware-stripprefix
-{{- end -}}
-{{- end -}}
+            name: {{ include "iot-applications.identifier" $ctx }}-middleware-stripprefix
+{{ end }}
+{{ end }}

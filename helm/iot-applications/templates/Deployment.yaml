@@ -1,95 +1,101 @@
-{{- range $applicationName, $application := .Values.apps -}}
+{{- range $applicationName, $application := .Values.apps | default dict -}}
+{{- include "iot-applications.validators.image" (dict "image" $application.image "applicationName" $applicationName) }}
+{{- include "iot-applications.validators.service" (dict "service" $application.service "applicationName" $applicationName) }}
+{{- $ctx := dict "application" $application "name" $applicationName "release" $.Release "chart" $.Chart -}}
+{{/* Prepare resource requests and limits in case they are not set */}}
+{{- $resources := $application.resources | default (dict) -}}
+{{- $requests := $resources.requests | default (dict) -}}
+{{- $limits := $resources.limits | default (dict) -}}
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ $application.labels.component }}-{{ $application.labels.partOf }}-{{ $applicationName }}
-  labels:
-    app.kubernetes.io/name: {{ $applicationName }}
-    app.kubernetes.io/version: {{ $application.image.tag }}
-    app.kubernetes.io/component: {{ $application.labels.component }}
-    app.kubernetes.io/part-of: {{ $application.labels.partOf }}
-    app.kubernetes.io/environment: {{ $.Release.Namespace }}
+  name: {{ include "iot-applications.identifier" $ctx }}
+  labels: {{ include "iot-applications.meta.labels" $ctx | nindent 4 }}
 spec:
-  replicas: {{ $application.replicas }}
+  replicas: {{ $application.replicas | default 1 }}
   selector:
-    matchLabels:
-      app: {{ $application.labels.component }}-{{ $application.labels.partOf }}-{{ $applicationName }}
+    matchLabels: {{ include "iot-applications.labels.selector" $ctx | nindent 6 }}
   template:
     metadata:
-      labels:
-        app: {{ $application.labels.component }}-{{ $application.labels.partOf }}-{{ $applicationName }}
+      labels: {{ include "iot-applications.labels.selector" $ctx | nindent 8 }}
     spec:
-      {{- if $application.jinja2.templates }}
+      {{- if $application.templates | default dict | len }}
       initContainers:
         {{- /* Loop all the Jinja2 templates, container can process only one template */}}
-        {{- range $templateName, $template := $application.jinja2.templates }}
-          - name: {{ $templateName }}-jinja2-init-container
+        {{- range $templateName, $template := $application.templates | default dict }}
+        {{- include "iot-applications.validators.template" (dict "name" $templateName "template" $template "applicationName" $applicationName) }}
+          - name: {{ include "iot-applications.identifier" $ctx }}-{{ $templateName }}-jinja2
             image: objectiflibre/jinja-init
             env:
               - name: VERBOSE
                 value: "1"
               - name: JINJA_SRC_FILE
-                value: /config_src/{{ $template.file }}
+                value: "/config_src/{{ $template.file }}"
               - name: JINJA_DEST_FILE
-                value: /config/{{ $template.file }}
-              {{- /* Prepare VARS for substitution */}}
-              {{- range $key, $value := $.Values }}
+                value: "/config/{{ $template.file }}"
+              {{- /* Prepare VARS for substitution. */}}
+              {{- range $key, $value := $.Values | default dict }}
               {{- if or (hasPrefix "VAR_" $key) (hasPrefix "SECRET_" $key) }}
               - name: JINJA_VAR_{{ $key }}
-                value: "{{ $value }}"
+                value: {{ $value | quote }}
               {{- end }}
               {{- end }}
+              {{- /* Prepare selected VARS from configuration. */}}
               - name: JINJA_VAR_APPLICATION
-                value: "{{ $applicationName }}"
+                value: {{ $applicationName | quote }}
               - name: JINJA_VAR_COMPONENT
-                value: "{{ $application.labels.component }}"
+                value: {{ $application.labels.component | quote }}
               - name: JINJA_VAR_APPLICATION_GROUP
-                value: "{{ $application.labels.partOf }}"
+                value: {{ $application.labels.partOf | quote }}
               - name: JINJA_VAR_CONTAINER_PORT
-                value: "{{ $application.service.targetPort }}"
+                value: {{ include "iot-applications.defaults.port" $application.service.targetPort | quote }}
               - name: JINJA_VAR_NAMESPACE
-                value: "{{ $.Release.Namespace }}"
+                value: {{ $.Release.Namespace | quote }}
             volumeMounts:
-              {{- /* Volume with config template */}}
-              - name: {{ $application.labels.component }}-{{ $application.labels.partOf }}-{{ $applicationName }}-{{ $templateName }}-jinja2-input-volume
+              {{- /* Volume with config template. */}}
+              - name: {{ include "iot-applications.identifier" $ctx }}-tpl-in-{{ $templateName }}
                 mountPath: /config_src
               {{- /* Volume with substituted config file */}}
-              - name: {{ $application.labels.component }}-{{ $application.labels.partOf }}-{{ $applicationName }}-{{ $templateName }}-jinja2-output-volume
+              - name: {{ include "iot-applications.identifier" $ctx }}-tpl-out-{{ $templateName }}
                 mountPath: /config
         {{- end }}
       {{- end }}
       containers:
-        - name: {{ $application.labels.component }}-{{ $application.labels.partOf }}-{{ $applicationName }}
-          image: {{ $application.image.repository }}:{{ $application.image.tag }}
+        - name: {{ include "iot-applications.identifier" $ctx }}
+          image: {{ $application.image.repository }}:{{ include "iot-applications.defaults.tag" $application.image.tag }}
+          {{- if $application.service.enabled }}
           ports:
-            - containerPort: {{ $application.service.targetPort }}
-          imagePullPolicy: {{ $application.image.pullPolicy }}
+            - containerPort: {{ include "iot-applications.defaults.port" $application.service.targetPort }}
+          {{- end }}
+          imagePullPolicy: {{ $application.image.pullPolicy | default "IfNotPresent" }}
           resources:
             requests:
-              cpu: {{ $application.resources.requests.cpu }}
-              memory: {{ $application.resources.requests.memory }}
+              cpu: {{ $requests.cpu | default "250m" | quote }}
+              memory: {{ $requests.memory | default "250Mi" | quote }}
             limits:
-              cpu: {{ $application.resources.limits.cpu }}
-              memory: {{ $application.resources.limits.memory }}
-          {{- if $application.jinja2.templates }}
+              cpu: {{ $limits.cpu | default "500m" | quote }}
+              memory: {{ $limits.memory | default "500Mi" | quote }}
+          {{- if $application.templates | default dict | len }}
           volumeMounts:
-            {{- /* Add volumes with substituted config files from Jinja2 container */}}
-            {{- range $templateName, $template := $application.jinja2.templates }}
-            - name: {{ $application.labels.component }}-{{ $application.labels.partOf }}-{{ $applicationName }}-{{ $templateName }}-jinja2-output-volume
+            {{- /* Add volumes with substituted config files from Jinja2 container. */}}
+            {{- range $templateName, $template := $application.templates | default dict }}
+            {{- include "iot-applications.validators.template" (dict "name" $templateName "template" $template "applicationName" $applicationName) }}
+            - name: {{ include "iot-applications.identifier" $ctx }}-tpl-out-{{ $templateName }}
               mountPath: {{ $template.path }}
             {{- end }}
           {{- end }}
-      {{- if $application.jinja2.templates }}
+      {{- if $application.templates | default dict | len }}
       volumes:
-        {{- range $templateName, $template := $application.jinja2.templates }}
-          {{- /* connect configmap with loaded jinja2 template */}}
-          - name: {{ $application.labels.component }}-{{ $application.labels.partOf }}-{{ $applicationName }}-{{ $templateName }}-jinja2-input-volume
+        {{- range $templateName, $template := $application.templates | default dict }}
+        {{- include "iot-applications.validators.template" (dict "name" $templateName "template" $template "applicationName" $applicationName) }}
+          {{- /* connect configmap with loaded jinja2 template. */}}
+          - name: {{ include "iot-applications.identifier" $ctx }}-tpl-in-{{ $templateName }}
             configMap:
-              name: {{ $application.labels.component }}-{{ $application.labels.partOf }}-{{ $applicationName }}-{{ $templateName }}-jinja2-configmap
-          {{- /* prepare volume for jinja2 output */}}
-          - name: {{ $application.labels.component }}-{{ $application.labels.partOf }}-{{ $applicationName }}-{{ $templateName }}-jinja2-output-volume
+              name: {{ include "iot-applications.identifier" $ctx }}-tpl-{{ $templateName }}
+          {{- /* prepare volume for jinja2 output. */}}
+          - name: {{ include "iot-applications.identifier" $ctx }}-tpl-out-{{ $templateName }}
             emptyDir: {}
         {{- end }}
       {{- end }}
-{{- end }}
+{{ end }}
