@@ -5,7 +5,7 @@ Using
 - [Helm](https://helm.sh/docs/intro/install/) v3
 - [Flannel](https://mvallim.github.io/kubernetes-under-the-hood/documentation/kube-flannel.html)
 - [Traefik](https://doc.traefik.io/traefik/setup/kubernetes/#prerequisites)
-  - `helm upgrade --install traefik traefik/traefik --namespace traefik --values traefik.yaml`
+  - `helm upgrade --install traefik traefik/traefik --namespace traefik --values traefik/values.yaml`
   - `helm uninstall traefik -n traefik`
 - [Rancher Local Path Provisioner](https://github.com/rancher/local-path-provisioner/tree/master/deploy/chart/local-path-provisioner)
   - clone into `local-path-provisioner`
