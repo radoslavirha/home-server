@@ -8,7 +8,7 @@ Deploy to sandbox environment
 
 ```sh
 helm upgrade interactive-map-feeder iot-applications \
-    --values iot-applications/environments/interactive-map-feeder.yaml \
+    --values iot-applications/interactive-map-feeder.yaml \
     --values iot-applications/environments/sandbox/interactive-map-feeder.yaml \
     --values iot-applications/environments/sandbox/variables.yaml \
     --values iot-applications/environments/sandbox/secrets.yaml \
@@ -30,7 +30,7 @@ Deploy to production environment
 
 ```sh
 helm upgrade interactive-map-feeder iot-applications \
-    --values iot-applications/environments/interactive-map-feeder.yaml \
+    --values iot-applications/interactive-map-feeder.yaml \
     --values iot-applications/environments/production/interactive-map-feeder.yaml \
     --values iot-applications/environments/production/variables.yaml \
     --values iot-applications/environments/production/secrets.yaml \
