@@ -1,32 +1,67 @@
-## @param apps.["*"] Configuration for individual applications
-## @param apps.["*"].replicas Number of replicas for the application. Defaults to 1 if not set.
+# apps:
+#   # Configuration for individual application called "application". You can define multiple applications here if needed.
+#   application:
+#     # Number of replicas for the application.
+#     # Defaults to 1 if not set.
+#     replicas: 1
 
-## @param apps.["*"].image Configuration for the application container image
-## @param apps.["*"].image.repository Required container image repository
-## @param apps.["*"].image.tag Container image tag. Use "latest" for the latest version.
-## @param apps.["*"].image.pullPolicy Container image pull policy. Defaults to "IfNotPresent" if not set.
+#     image:
+#       # Required container image repository for the application.
+#       repository: your-docker-repo/your-application-image
+#       # Container image tag for the application.
+#       # Defaults to "latest" if not set.
+#       tag: latest
+#       # Container image pull policy.
+#       # https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
+#       # Defaults to "IfNotPresent" if not set.
+#       pullPolicy: IfNotPresent
 
-## @param apps.["*"].resources Resource requests and limits for the application container
-## @param apps.["*"].resources.requests Resource requests for the application container
-## @param apps.["*"].resources.requests.cpu CPU request for the application container. Defaults to "250m" if not set.
-## @param apps.["*"].resources.requests.memory Memory request for the application container. Defaults to "250Mi" if not set.
-## @param apps.["*"].resources.limits Resource limits for the application container.
-## @param apps.["*"].resources.limits.cpu CPU limit for the application container. Defaults to "500m" if not set.
-## @param apps.["*"].resources.limits.memory Memory limit for the application container. Defaults to "500Mi" if not set.
+#     # https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+#     # Defaults to below values if not set.
+#     resources:
+#       requests:
+#         # CPU request for the application container.
+#         # Defaults to "250m" if not set.
+#         cpu: 250m
+#         # Memory request for the application container.
+#         # Defaults to "250Mi" if not set.
+#         memory: 250Mi
+#       limits:
+#         # CPU limit for the application container.
+#         # Defaults to "500m" if not set.
+#         cpu: 500m
+#         # Memory limit for the application container.
+#         # Defaults to "500Mi" if not set.
+#         memory: 500Mi
 
-## @param apps.["*"].labels Labels to apply to the application pods
-## @param apps.["*"].labels.component Component label for the application. Serves also as subdomain for ingress.
-## @param apps.["*"].labels.partOf PartOf label for the application. Serves also as base path for ingress.
+#     labels:
+#       # Required component label for the application.
+#       # Serves also as subdomain for ingress.
+#       # Available values: api
+#       component:
+#       # Required part of label for the application.
+#       # Serves also as base path for ingress.
+#       # Technically any value possible, but all applications in one chart should share the same partOf value.
+#       partOf: iot
 
-## @param apps.["*"].service Configuration for the application service
-## @param apps.["*"].service.enabled Whether to enable service for the application. Disabling will also disable ingress.
-## @param apps.["*"].service.targetPort Target port for the application service, defaults to 80 if not set.
+#     service:
+#       # Required property. Whether to enable service for the application. Disabling will also disable ingress.
+#       enabled: true
+#       # Target port for the application service, defaults to 80 if not set.
+#       # Defaults to 80 if not set.
+#       targetPort: 80
+    
+#     ingress:
+#       # Required property. Whether to enable ingress for the application.
+#       enabled: true
 
-## @param apps.["*"].ingress Configuration for the application ingress
-## @param apps.["*"].ingress.enabled Whether to enable ingress for the application. Required.
-
-## @param apps.["*"].templates Optional configuration for Jinja2 templates
-## @param apps.["*"].templates.["*"] Configuration for a specific Jinja2 template
-## @param apps.["*"].templates.["*"].template Required path to the Jinja2 template file
-## @param apps.["*"].templates.["*"].path Required destination path for the rendered template
-## @param apps.["*"].templates.["*"].file Required destination file name for the rendered template
+#     # Dictionary of Jinja2 templates to be processed for the application using initContainer.
+#     templates:
+#       # Configuration for a specific Jinja2 template called "template-name".
+#       template-name:
+#         # Required path to the Jinja2 template file within the Helm chart.
+#         template: environments/production/config/config.json
+#         # Required destination path within the application container where the rendered template will be placed.
+#         path: /home/app/config
+#         # Required destination file name for the rendered template.
+#         file: production.json

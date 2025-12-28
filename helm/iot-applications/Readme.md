@@ -2,32 +2,21 @@
 
 ## Applications configuration
 
-In the root, there must be `apps` dictionary with applications defined as key: value pairs. Key is important here, it is currently used to generate path to application within `applicationGroup`:
+Follow `values.yaml`.
+
+Example:
 
 ```yaml
 apps:
-    my-app:
-        component: api
-        applicationGroup: iot
+  my-app:
+    labels:
+      component: api
+      partOf: iot
 ```
 
-deploys app to `{{ SUBDOMAIN if defined }}.{{ apps.my-app.component }}.{{ PUBLIC_DOMAIN }}/{{ apps.my-app.applicationGroup }}/{{ my-app }}`
+deploys app to `{{ SUBDOMAIN if defined }}.{{ apps.my-app.labels.component }}.{{ PUBLIC_DOMAIN }}/{{ apps.my-app.labels.partOf }}/{{ my-app }}`
 
-Then you should define properties
-
-- `replicas` - how many replicas to deploy
-- `image`
-  - `repository` container registry URL to image
-  - `tag` image tag
-- `labels`
-  - `component` defines global application type like `api`, `ui`, `database`
-  - `partOf` defines group of applications
-- `service`
-  - `targetPort` where k8s should expect app to be running inside container. Ideal scenario is to use `CONTAINER_PORT` variable inside application template to ensure expected port and actual port in container are the same.
-- `ingress`
-  - `enabled` tells if ingress should be enabled
-
-Property `jinja2.templates` is dictionary of templates we want to mount into the container. `path` is path inside container where substituted template should be mounted, `file` is filename and `template` refers to template location.
+Property `apps.["*"].templates` is dictionary of templates we want to mount into the container. `path` is path inside container where substituted template should be mounted, `file` is filename and `template` refers to jinja2 template location.
 
 ## Jinja2
 
