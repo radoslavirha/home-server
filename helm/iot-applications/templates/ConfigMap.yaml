@@ -11,7 +11,7 @@ metadata:
   labels: {{ include "iot-applications.meta.labels" $ctx | nindent 4 }}
 data:
   {{ $template.file }}: |-
-    {{- $.Files.Get $template.template | nindent 6 }}
+    {{- $.Files.Get $template.template | nindent 4 }}
 {{ end }}
 {{ end }}
 {{ end }}
