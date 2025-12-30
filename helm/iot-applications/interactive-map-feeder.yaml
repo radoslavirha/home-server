@@ -3,7 +3,7 @@ apps:
     replicas: 1
     image:
       repository: radoslavirha/interactive-map-feeder
-      tag: latest
+      tag: 0.1.2
       pullPolicy: Always
       # pullPolicy: IfNotPresent
     resources:
