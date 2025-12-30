@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: api-iot-interactive-map-feeder-sandbox
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/radoslavirha/home-server.git
+    targetRevision: HEAD
+    path: helm/iot-applications
+    helm:
+      valueFiles:
+        - interactive-map-feeder.yaml
+        - environments/sandbox/interactive-map-feeder.yaml
+        - environments/sandbox/variables.yaml
+  destination: 
+    server: https://kubernetes.default.svc
+    namespace: sandbox
+  syncPolicy:
+    automated:
+      enabled: true
+      selfHeal: true
+      prune: true
