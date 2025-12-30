@@ -1,0 +1,38 @@
+global:
+  domain: argocd.server.home
+
+notifications:
+  argocdUrl: http://argocd.server.home
+
+configs:
+  cm:
+    url: http://argocd.server.home
+  params:
+    server.insecure: true
+
+server:
+  httproute:
+    enabled: true
+    parentRefs:
+      - name: traefik-gateway
+        namespace: traefik
+    hostnames:
+      - argocd.server.home
+    rules:
+      - matches:
+          - path:
+              type: PathPrefix
+              value: /
+  grpcroute:
+    enabled: true
+    parentRefs:
+      - name: traefik-gateway
+        namespace: traefik
+    hostnames:
+      - grpc.argocd.server.home
+    rules:
+      - matches:
+          - headers:
+            - name: Content-Type
+              type: RegularExpression
+              value: "^application/grpc.*$"

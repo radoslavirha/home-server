@@ -18,3 +18,6 @@ Using
 - [Grafana](https://grafana.com/docs/grafana/latest/setup-grafana/installation/helm/)
   - `helm upgrade --install grafana grafana/grafana --namespace monitoring --values grafana/values.yaml`
   - `helm uninstall grafana -n monitoring`
+- [Argo CD](https://artifacthub.io/packages/helm/argo-cd-oci/argo-cd)
+  - `helm upgrade --install argocd argo/argo-cd --namespace argocd --values argocd/values.yaml`
+  - `helm uninstall argocd -n argocd`
