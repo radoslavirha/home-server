@@ -15,6 +15,10 @@ ingressRoute:
     entryPoints:
       - web
 
+service:
+  externalIPs:
+    - 192.168.0.200
+
 extraObjects:
 
 # We will route with Gateway API instead.

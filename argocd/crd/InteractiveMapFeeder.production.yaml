@@ -10,6 +10,7 @@ spec:
     targetRevision: HEAD
     path: helm/iot-applications
     helm:
+      releaseName: api-iot-interactive-map-feeder
       valueFiles:
         - interactive-map-feeder.yaml
         - environments/production/interactive-map-feeder.yaml
@@ -18,6 +19,8 @@ spec:
     server: https://kubernetes.default.svc
     namespace: production
   syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
     automated:
       enabled: true
       selfHeal: true
