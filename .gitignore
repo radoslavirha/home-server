@@ -1,5 +1,4 @@
 helm/**/environments/**/secrets.yaml
 
-grafana/k8s/Secret.yaml
-influx/k8s/Secret.yaml
+k8s/**/Secret.yaml
 local-path-provisioner/local-path-provisioner
