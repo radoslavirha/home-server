@@ -1,4 +1,3 @@
-helm/**/environments/**/secrets.yaml
-
-k8s/**/Secret.yaml
+helm-charts/**/environments/**/secrets.yaml
+k8s-manifests/**/Secret.yaml
 local-path-provisioner/local-path-provisioner

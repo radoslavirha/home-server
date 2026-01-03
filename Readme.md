@@ -4,7 +4,7 @@ Using
 
 - [Helm](https://helm.sh/docs/intro/install/) v3
 - [Flannel](https://mvallim.github.io/kubernetes-under-the-hood/documentation/kube-flannel.html)
-- [Traefik](https://doc.traefik.io/traefik/setup/kubernetes/#prerequisites)
+- [Traefik](https://artifacthub.io/packages/helm/traefik/traefik)
   - Managed by Argo CD
 - [Rancher Local Path Provisioner](https://github.com/rancher/local-path-provisioner/tree/master/deploy/chart/local-path-provisioner)
   - clone into `local-path-provisioner`
@@ -20,3 +20,5 @@ Using
 - [Argo CD](https://artifacthub.io/packages/helm/argo-cd-oci/argo-cd)
   - `helm upgrade --install argocd argo/argo-cd --namespace argocd --values helm-values/argocd.yaml`
   - `helm uninstall argocd -n argocd`
+- [Kubernetes Dashboard](https://artifacthub.io/packages/helm/k8s-dashboard/kubernetes-dashboard)
+  - Managed by Argo CD
