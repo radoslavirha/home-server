@@ -1,8 +1,8 @@
-fullnameOverride: influxdb
+fullnameOverride: influxdb2
 
 adminUser:
   organization: home-server
-  existingSecret: influxdb-auth
+  existingSecret: influxdb2
 
 service:
   port: 80

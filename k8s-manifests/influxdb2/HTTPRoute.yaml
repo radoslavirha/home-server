@@ -2,10 +2,10 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: influx
+  name: influxdb2
   namespace: monitoring
   labels:
-    app.kubernetes.io/name: influx
+    app.kubernetes.io/name: influxdb2
     app.kubernetes.io/component: db
     app.kubernetes.io/part-of: monitoring
     app.kubernetes.io/environment: monitoring
@@ -17,6 +17,6 @@ spec:
     - influx.server.home
   rules:
     - backendRefs:
-        - name: influxdb
+        - name: influxdb2
           namespace: monitoring
           port: 80

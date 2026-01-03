@@ -20,7 +20,7 @@ datasources:
       - name: InfluxDB
         type: influxdb
         access: proxy
-        url: http://influxdb.monitoring.svc.cluster.local
+        url: http://influxdb2.monitoring.svc.cluster.local
         jsonData:
           version: Flux
           organization: home-server
