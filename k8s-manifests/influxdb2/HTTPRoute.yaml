@@ -9,6 +9,8 @@ metadata:
     app.kubernetes.io/component: db
     app.kubernetes.io/part-of: monitoring
     app.kubernetes.io/environment: monitoring
+  annotations:
+    argocd.argoproj.io/sync-wave: "100"
 spec:
   parentRefs:
     - name: traefik-gateway
