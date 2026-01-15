@@ -3,6 +3,7 @@ ports:
   web:
     port: 80
     nodePort: 30000
+  metrics: null
 
 api:
   dashboard: true
@@ -50,8 +51,10 @@ logs:
 
 # Enables Prometheus for Metrics
 metrics:
-  prometheus:
-    enabled: true
+  prometheus: null
+  otlp:
+    enabled: false
+
 
 securityContext:
   capabilities:

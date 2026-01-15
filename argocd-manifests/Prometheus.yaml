@@ -1,23 +1,26 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: traefik
+  name: prometheus
   namespace: argocd
 spec:
   project: default
   sources:
-    - repoURL: https://traefik.github.io/charts
-      chart: traefik
-      targetRevision: 38.0.2
+    - repoURL: https://prometheus-community.github.io/helm-charts
+      chart: prometheus
+      targetRevision: 28.4.0
       helm:
         valueFiles:
-        - $values/helm-values/traefik.yaml
+        - $values/helm-values/prometheus.yaml
     - repoURL: https://github.com/radoslavirha/home-server.git
       targetRevision: HEAD
       ref: values
+    - repoURL: https://github.com/radoslavirha/home-server.git
+      targetRevision: HEAD
+      path: k8s-manifests/prometheus
   destination: 
     server: https://kubernetes.default.svc
-    namespace: traefik
+    namespace: monitoring
   syncPolicy:
     syncOptions:
       - CreateNamespace=true

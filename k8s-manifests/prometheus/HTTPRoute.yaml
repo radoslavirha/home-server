@@ -1,0 +1,24 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: prometheus
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/name: prometheus
+    app.kubernetes.io/component: db
+    app.kubernetes.io/part-of: monitoring
+    app.kubernetes.io/environment: monitoring
+  annotations:
+    argocd.argoproj.io/sync-wave: "100"
+spec:
+  parentRefs:
+    - name: traefik-gateway
+      namespace: traefik
+  hostnames:
+    - prometheus.server.home
+  rules:
+    - backendRefs:
+        - name: prometheus-server
+          namespace: monitoring
+          port: 80
