@@ -1,6 +1,6 @@
 apps:
   miot-bridge:
-    replicas: 2
+    replicas: 1
     templates:
       config:
         template: environments/sandbox/config/miot-bridge.json
