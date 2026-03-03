@@ -1,9 +1,9 @@
 apps:
-  interactive-map-feeder:
+  miot-bridge:
     replicas: 1
     image:
-      repository: radoslavirha/interactive-map-feeder
-      tag: 0.2.5
+      repository: radoslavirha/miot-bridge
+      tag: 0.2.4
       pullPolicy: Always
       # pullPolicy: IfNotPresent
     resources:
