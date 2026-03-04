@@ -73,6 +73,20 @@
 {{- end -}}
 {{- end -}}
 
+{{/* Validates udpIngress.
+     Input is dictionary with udpIngress: dictionary, applicationName: string
+*/}}
+{{- define "iot-applications.validators.udpIngress" -}}
+{{- if and (hasKey .udpIngress "enabled") (.udpIngress.enabled) -}}
+{{- if not (hasKey .udpIngress "serviceRef") -}}
+{{- fail (printf "udpIngress must have a 'serviceRef' key when enabled. [apps.%s.udpIngress]." .applicationName) -}}
+{{- end -}}
+{{- if not (hasKey .udpIngress "entrypoint") -}}
+{{- fail (printf "udpIngress must have an 'entrypoint' key when enabled. [apps.%s.udpIngress]." .applicationName) -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
+
 {{/* Validates template.
      Input is dictionary with name: string, template: dictionary, applicationName: string
 */}}

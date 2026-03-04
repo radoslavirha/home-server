@@ -46,8 +46,8 @@
 #       udp:
 #         enabled: true
 #         protocol: UDP
-#         port: 4002
-#         targetPort: 4002
+#         port: 4000
+#         targetPort: 4000
 
 #     ingress:
 #       # Required. Whether to create HTTPRoute + Middleware for this application.
@@ -55,6 +55,16 @@
 #       # Which key from services dict to use as the HTTPRoute backend.
 #       # Required when ingress.enabled is true.
 #       serviceRef: http
+
+#     # Optional. Creates a Traefik IngressRouteUDP resource for UDP traffic.
+#     # Requires a matching UDP entrypoint configured in Traefik.
+#     udpIngress:
+#       # Required. Whether to create an IngressRouteUDP for this application.
+#       enabled: true
+#       # Required when enabled. Which key from services dict to use as the UDP backend.
+#       serviceRef: udp
+#       # Required when enabled. Name of the Traefik UDP entrypoint (must match ports in Traefik helm values).
+#       entrypoint: udp-miot-bridge
 
 #     # Dictionary of Jinja2 templates to mount into the container via initContainer.
 #     # Config content lives here (in env-specific values files) as multiline strings.
@@ -68,7 +78,7 @@
 #         path: /home/app/config
 #         # Required. Raw Jinja2 template content (defined in env-specific values files).
 #         # Injected variables: APPLICATION, COMPONENT, APPLICATION_GROUP, CONTAINER_PORT,
-#         # NAMESPACE, and any VAR_* / SECRET_* values from the values files.
+#         # CONTAINER_UDP_PORT (when udpIngress is set), NAMESPACE, and any VAR_* / SECRET_* values from the values files.
 #         content: |
 #           {
 #             "key": "{{ VAR_EXAMPLE }}"

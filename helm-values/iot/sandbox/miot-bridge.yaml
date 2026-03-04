@@ -15,7 +15,7 @@ apps:
               "cachePath": "./cache",
               "udp": {
                   "enabled": false,
-                  "port": 4002
+                  "port": {{ CONTAINER_UDP_PORT }}
               },
               "polling": {
                   "enabled": true,

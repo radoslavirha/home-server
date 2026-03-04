@@ -2,8 +2,10 @@ hostNetwork: true
 ports:
   web:
     port: 80
-    nodePort: 30000
   metrics: null
+  udp-miot-bridge:
+    port: 4000
+    protocol: UDP
 
 api:
   dashboard: true

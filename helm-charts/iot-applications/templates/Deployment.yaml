@@ -9,6 +9,9 @@
 {{/* Resolve main service for CONTAINER_PORT via ingress.serviceRef */}}
 {{- $mainServiceRef := $application.ingress.serviceRef | default "" -}}
 {{- $mainService := get ($application.services | default dict) $mainServiceRef | default dict -}}
+{{/* Resolve UDP service for CONTAINER_UDP_PORT via udpIngress.serviceRef */}}
+{{- $udpServiceRef := (($application.udpIngress | default dict).serviceRef | default "") -}}
+{{- $udpService := get ($application.services | default dict) $udpServiceRef | default dict -}}
 {{- if not (($application.rollout | default dict).enabled) }}
 ---
 apiVersion: apps/v1
@@ -58,6 +61,10 @@ spec:
                 value: {{ $application.labels.partOf | quote }}
               - name: JINJA_VAR_CONTAINER_PORT
                 value: {{ $mainService.targetPort | default 80 | toString | quote }}
+              {{- if $udpService.targetPort }}
+              - name: JINJA_VAR_CONTAINER_UDP_PORT
+                value: {{ $udpService.targetPort | toString | quote }}
+              {{- end }}
               - name: JINJA_VAR_NAMESPACE
                 value: {{ $.Release.Namespace | quote }}
             volumeMounts:

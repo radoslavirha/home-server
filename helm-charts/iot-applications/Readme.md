@@ -71,6 +71,7 @@ All `VAR_*` and `SECRET_*` keys from values files are passed as env vars to the 
 |---|---|
 | `APPLICATION` | `apps[name]` |
 | `CONTAINER_PORT` | `apps[name].ingress.serviceRef` → `services[ref].targetPort` |
+| `CONTAINER_UDP_PORT` | `apps[name].udpIngress.serviceRef` → `services[ref].targetPort` (only when `udpIngress` is configured) |
 | `COMPONENT` | `apps[name].labels.component` |
 | `APPLICATION_GROUP` | `apps[name].labels.partOf` |
 | `NAMESPACE` | Helm `$.Release.Namespace` |

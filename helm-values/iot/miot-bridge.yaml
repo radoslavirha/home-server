@@ -23,11 +23,15 @@ apps:
       udp:
         enabled: true
         protocol: UDP
-        port: 4002
-        targetPort: 4002
+        port: 80
+        targetPort: 4000
     ingress:
       enabled: true
       serviceRef: http
+    udpIngress:
+      enabled: true
+      serviceRef: udp
+      entrypoint: udp-miot-bridge
     templates:
       config:
         file: production.json
