@@ -1,7 +1,7 @@
 apps:
   miot-bridge:
     udpIngress:
-      entrypoint: udp-miot-bridge-production
+      entrypoint: udp-miot-prod
     image:
       tag: 0.2.5
     replicas: 1
