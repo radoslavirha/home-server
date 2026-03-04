@@ -1,5 +1,7 @@
 apps:
   miot-bridge:
+    image:
+      tag: 0.2.4
     replicas: 1
     templates:
       config:

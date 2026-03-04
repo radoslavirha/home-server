@@ -2,7 +2,7 @@ apps:
   miot-bridge:
     image:
       repository: radoslavirha/miot-bridge
-      tag: 0.2.4
+      tag: latest
       pullPolicy: Always
     resources:
       requests:

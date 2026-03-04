@@ -2,7 +2,7 @@ apps:
   interactive-map-feeder:
     image:
       repository: radoslavirha/interactive-map-feeder
-      tag: 0.2.5
+      tag: latest
       pullPolicy: Always
     resources:
       requests:

@@ -1,5 +1,7 @@
 apps:
   interactive-map-feeder:
+    image:
+      tag: 0.2.5
     replicas: 2
     templates:
       config:
