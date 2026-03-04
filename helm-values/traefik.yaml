@@ -34,11 +34,11 @@ ingressClass:
 providers:
   kubernetesIngress:
     enabled: false
-  kubernetesCRD:
-    enabled: true
-    # Watch all namespaces so Middleware CRDs in sandbox/production are found
-    # when referenced via HTTPRoute ExtensionRef (@kubernetescrd).
-    namespaces: []
+  # kubernetesCRD:
+  #   enabled: true
+  #   # Watch all namespaces so Middleware CRDs in sandbox/production are found
+  #   # when referenced via HTTPRoute ExtensionRef (@kubernetescrd).
+  #   namespaces: []
   kubernetesGateway:
     enabled: true
 
