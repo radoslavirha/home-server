@@ -33,9 +33,14 @@ ingressClass:
 # Providers tell Traefik where to find routing configuration.
 providers:
   kubernetesIngress:
-     enabled: false
+    enabled: false
+  kubernetesCRD:
+    enabled: true
+    # Watch all namespaces so Middleware CRDs in sandbox/production are found
+    # when referenced via HTTPRoute ExtensionRef (@kubernetescrd).
+    namespaces: []
   kubernetesGateway:
-     enabled: true
+    enabled: true
 
 ## Gateway Listeners
 gateway:
