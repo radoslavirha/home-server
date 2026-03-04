@@ -31,7 +31,6 @@ apps:
     udpIngress:
       enabled: true
       serviceRef: udp
-      entrypoint: udp-miot-bridge
     templates:
       config:
         file: production.json

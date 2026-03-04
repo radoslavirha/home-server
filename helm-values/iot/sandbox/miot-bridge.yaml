@@ -1,5 +1,7 @@
 apps:
   miot-bridge:
+    udpIngress:
+      entrypoint: udp-miot-bridge-sandbox
     image:
       tag: 0.2.5
     replicas: 1
