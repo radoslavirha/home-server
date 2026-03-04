@@ -1,11 +1,15 @@
 {{- range $applicationName, $application := .Values.apps | default dict -}}
 {{- include "iot-applications.validators.image" (dict "image" $application.image "applicationName" $applicationName) }}
-{{- include "iot-applications.validators.service" (dict "service" $application.service "applicationName" $applicationName) }}
+{{- include "iot-applications.validators.services" (dict "services" ($application.services | default dict) "applicationName" $applicationName) }}
 {{- $ctx := dict "application" $application "name" $applicationName "release" $.Release "chart" $.Chart -}}
 {{/* Prepare resource requests and limits in case they are not set */}}
 {{- $resources := $application.resources | default (dict) -}}
 {{- $requests := $resources.requests | default (dict) -}}
 {{- $limits := $resources.limits | default (dict) -}}
+{{/* Resolve main service for CONTAINER_PORT via ingress.serviceRef */}}
+{{- $mainServiceRef := $application.ingress.serviceRef | default "" -}}
+{{- $mainService := get ($application.services | default dict) $mainServiceRef | default dict -}}
+{{- if not (($application.rollout | default dict).enabled) }}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -19,6 +23,10 @@ spec:
   template:
     metadata:
       labels: {{ include "iot-applications.labels.selector" $ctx | nindent 8 }}
+      {{- if $application.templates | default dict | len }}
+      annotations:
+        checksum/config: {{ $application.templates | toJson | sha256sum }}
+      {{- end }}
     spec:
       {{- if $application.templates | default dict | len }}
       initContainers:
@@ -49,7 +57,7 @@ spec:
               - name: JINJA_VAR_APPLICATION_GROUP
                 value: {{ $application.labels.partOf | quote }}
               - name: JINJA_VAR_CONTAINER_PORT
-                value: {{ include "iot-applications.defaults.port" $application.service.targetPort | quote }}
+                value: {{ $mainService.targetPort | default 80 | toString | quote }}
               - name: JINJA_VAR_NAMESPACE
                 value: {{ $.Release.Namespace | quote }}
             volumeMounts:
@@ -64,9 +72,14 @@ spec:
       containers:
         - name: {{ include "iot-applications.identifier" $ctx }}
           image: {{ $application.image.repository }}:{{ include "iot-applications.defaults.tag" $application.image.tag }}
-          {{- if $application.service.enabled }}
+          {{- if $application.services | default dict | len }}
           ports:
-            - containerPort: {{ include "iot-applications.defaults.port" $application.service.targetPort }}
+            {{- range $serviceName, $svc := $application.services | default dict }}
+            {{- if $svc.enabled }}
+            - containerPort: {{ $svc.targetPort | default 80 }}
+              protocol: {{ $svc.protocol | default "TCP" }}
+            {{- end }}
+            {{- end }}
           {{- end }}
           imagePullPolicy: {{ $application.image.pullPolicy | default "IfNotPresent" }}
           resources:
@@ -98,4 +111,5 @@ spec:
             emptyDir: {}
         {{- end }}
       {{- end }}
+{{- end }}
 {{ end }}

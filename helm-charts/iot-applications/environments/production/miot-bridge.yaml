@@ -1,6 +1,0 @@
-apps:
-  miot-bridge:
-    replicas: 1
-    templates:
-      config:
-        template: environments/production/config/miot-bridge.json

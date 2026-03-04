@@ -1,8 +1,9 @@
 {{- range $applicationName, $application := .Values.apps | default dict -}}
-{{- include "iot-applications.validators.service" (dict "service" $application.service "applicationName" $applicationName) }}
 {{- include "iot-applications.validators.ingress" (dict "ingress" $application.ingress "applicationName" $applicationName) }}
-{{- if and $application.service.enabled $application.ingress.enabled }}
+{{- if $application.ingress.enabled }}
 {{- $ctx := dict "application" $application "name" $applicationName "release" $.Release "chart" $.Chart -}}
+{{- $refSvcName := $application.ingress.serviceRef | default "" -}}
+{{- $refSvc := get ($application.services | default dict) $refSvcName | default dict -}}
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
@@ -21,8 +22,8 @@ spec:
             type: PathPrefix
             value: /{{ $application.labels.partOf }}/{{ $applicationName }}
       backendRefs:
-        - name: {{ include "iot-applications.identifier" $ctx }}
-          port: 80
+        - name: {{ include "iot-applications.identifier" $ctx }}-{{ $refSvcName }}
+          port: {{ $refSvc.port | default 80 }}
       filters:
         - type: ExtensionRef
           extensionRef:

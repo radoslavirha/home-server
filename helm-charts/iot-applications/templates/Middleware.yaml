@@ -1,7 +1,6 @@
 {{- range $applicationName, $application := .Values.apps | default dict -}}
-{{- include "iot-applications.validators.service" (dict "service" $application.service "applicationName" $applicationName) }}
 {{- include "iot-applications.validators.ingress" (dict "ingress" $application.ingress "applicationName" $applicationName) }}
-{{- if and $application.service.enabled $application.ingress.enabled }}
+{{- if $application.ingress.enabled }}
 {{- $ctx := dict "application" $application "name" $applicationName "release" $.Release "chart" $.Chart -}}
 ---
 apiVersion: traefik.io/v1alpha1

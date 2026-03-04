@@ -1,0 +1,34 @@
+apps:
+  miot-bridge:
+    image:
+      repository: radoslavirha/miot-bridge
+      tag: 0.2.4
+      pullPolicy: Always
+    resources:
+      requests:
+        cpu: 250m
+        memory: 250Mi
+      limits:
+        cpu: 500m
+        memory: 500Mi
+    labels:
+      component: api
+      partOf: iot
+    services:
+      http:
+        enabled: true
+        protocol: TCP
+        port: 80
+        targetPort: 4000
+      udp:
+        enabled: true
+        protocol: UDP
+        port: 4002
+        targetPort: 4002
+    ingress:
+      enabled: true
+      serviceRef: http
+    templates:
+      config:
+        file: production.json
+        path: /home/app/config

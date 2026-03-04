@@ -1,11 +1,9 @@
 apps:
-  miot-bridge:
-    replicas: 1
+  interactive-map-feeder:
     image:
-      repository: radoslavirha/miot-bridge
-      tag: 0.2.4
+      repository: radoslavirha/interactive-map-feeder
+      tag: 0.2.5
       pullPolicy: Always
-      # pullPolicy: IfNotPresent
     resources:
       requests:
         cpu: 250m
@@ -16,12 +14,16 @@ apps:
     labels:
       component: api
       partOf: iot
-    service:
-      enabled: true
-      targetPort: 4000
+    services:
+      http:
+        enabled: true
+        protocol: TCP
+        port: 80
+        targetPort: 4000
     ingress:
       enabled: true
+      serviceRef: http
     templates:
       config:
-        path: /home/app/config
         file: production.json
+        path: /home/app/config

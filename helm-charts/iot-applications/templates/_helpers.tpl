@@ -43,18 +43,22 @@
 
 {{- end -}}
 
-{{/* Validates service.
-     Input is dictionary with service: dictionary, applicationName: string
+{{/* Validates services dict.
+     Input is dictionary with services: dictionary, applicationName: string
 */}}
-{{- define "iot-applications.validators.service" -}}
-
-{{- if not (hasKey .service "enabled") -}}
-{{- fail (printf "Service configuration must have an 'enabled' key with boolean value. [apps.%s.service]." .applicationName) -}}
+{{- define "iot-applications.validators.services" -}}
+{{- $applicationName := .applicationName -}}
+{{- range $serviceName, $svc := .services -}}
+{{- if not (hasKey $svc "enabled") -}}
+{{- fail (printf "Service '%s' must have an 'enabled' key. [apps.%s.services]." $serviceName $applicationName) -}}
 {{- end -}}
-
-{{- if .service.enabled -}}
-{{- if hasKey .service "targetPort" -}}
-{{- include "iot-applications.validators.portRange" (dict "port" .service.targetPort "applicationName" .applicationName) -}}
+{{- if $svc.enabled -}}
+{{- if hasKey $svc "port" -}}
+{{- include "iot-applications.validators.portRange" (dict "port" $svc.port "applicationName" $applicationName) -}}
+{{- end -}}
+{{- if hasKey $svc "targetPort" -}}
+{{- include "iot-applications.validators.portRange" (dict "port" $svc.targetPort "applicationName" $applicationName) -}}
+{{- end -}}
 {{- end -}}
 {{- end -}}
 {{- end -}}
@@ -73,8 +77,8 @@
      Input is dictionary with name: string, template: dictionary, applicationName: string
 */}}
 {{- define "iot-applications.validators.template" -}}
-{{- if not (hasKey .template "template") -}}
-{{- fail (printf "Template '%s' must have a template key. [apps.%s.templates]." .name .applicationName) -}}
+{{- if not (hasKey .template "content") -}}
+{{- fail (printf "Template '%s' must have a content key. [apps.%s.templates]." .name .applicationName) -}}
 {{- end -}}
 
 {{- if not (hasKey .template "path") -}}

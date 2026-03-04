@@ -1,67 +1,114 @@
 # apps:
-#   # Configuration for individual application called "application". You can define multiple applications here if needed.
+#   # Configuration for an individual application. Multiple applications can be defined here.
 #   application:
-#     # Number of replicas for the application.
-#     # Defaults to 1 if not set.
+#     # Number of replicas. Defaults to 1 if not set.
 #     replicas: 1
 
 #     image:
-#       # Required container image repository for the application.
+#       # Required. Container image repository.
 #       repository: your-docker-repo/your-application-image
-#       # Container image tag for the application.
-#       # Defaults to "latest" if not set.
+#       # Container image tag. Defaults to "latest" if not set.
 #       tag: latest
-#       # Container image pull policy.
+#       # Image pull policy. Defaults to "IfNotPresent" if not set.
 #       # https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
-#       # Defaults to "IfNotPresent" if not set.
 #       pullPolicy: IfNotPresent
 
 #     # https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
-#     # Defaults to below values if not set.
 #     resources:
 #       requests:
-#         # CPU request for the application container.
-#         # Defaults to "250m" if not set.
 #         cpu: 250m
-#         # Memory request for the application container.
-#         # Defaults to "250Mi" if not set.
 #         memory: 250Mi
 #       limits:
-#         # CPU limit for the application container.
-#         # Defaults to "500m" if not set.
 #         cpu: 500m
-#         # Memory limit for the application container.
-#         # Defaults to "500Mi" if not set.
 #         memory: 500Mi
 
 #     labels:
-#       # Required component label for the application.
-#       # Serves also as subdomain for ingress.
-#       # Available values: api
-#       component:
-#       # Required part of label for the application.
-#       # Serves also as base path for ingress.
-#       # Technically any value possible, but all applications in one chart should share the same partOf value.
+#       # Required. Used as the component label and ingress subdomain.
+#       component: api
+#       # Required. Used as base path for ingress (/partOf/application).
 #       partOf: iot
 
-#     service:
-#       # Required property. Whether to enable service for the application. Disabling will also disable ingress.
-#       enabled: true
-#       # Target port for the application service, defaults to 80 if not set.
-#       # Defaults to 80 if not set.
-#       targetPort: 80
-    
-#     ingress:
-#       # Required property. Whether to enable ingress for the application.
-#       enabled: true
+#     # Dictionary of Kubernetes Services to create for this application.
+#     # Supports multiple protocols per pod (e.g. HTTP + UDP).
+#     # For Argo Rollouts canary/blueGreen, define service pairs here using
+#     # the names expected by rollout.canary.stableServiceRef etc.
+#     services:
+#       # Each key becomes the service name suffix: {identifier}-{key}
+#       http:
+#         # Required. Whether to create this service.
+#         enabled: true
+#         # Protocol: TCP or UDP. Defaults to TCP.
+#         protocol: TCP
+#         # Service port (ClusterIP). Defaults to 80.
+#         port: 80
+#         # Container target port. Defaults to 80.
+#         targetPort: 4000
+#       udp:
+#         enabled: true
+#         protocol: UDP
+#         port: 4002
+#         targetPort: 4002
 
-#     # Dictionary of Jinja2 templates to be processed for the application using initContainer.
+#     ingress:
+#       # Required. Whether to create HTTPRoute + Middleware for this application.
+#       enabled: true
+#       # Which key from services dict to use as the HTTPRoute backend.
+#       # Required when ingress.enabled is true.
+#       serviceRef: http
+
+#     # Dictionary of Jinja2 templates to mount into the container via initContainer.
+#     # Config content lives here (in env-specific values files) as multiline strings.
+#     # Pods automatically restart when content changes (checksum annotation).
 #     templates:
-#       # Configuration for a specific Jinja2 template called "template-name".
-#       template-name:
-#         # Required path to the Jinja2 template file within the Helm chart.
-#         template: environments/production/config/config.json
-#         # Required destination path within the application container where the rendered template will be placed.
-#         path: /home/app/config
-#         # Required destination file name for the rendered template.
+#       # Each key is the template name. Generates one ConfigMap + initContainer.
+#       config:
+#         # Required. Destination file name inside the container.
 #         file: production.json
+#         # Required. Destination path inside the container where the file is mounted.
+#         path: /home/app/config
+#         # Required. Raw Jinja2 template content (defined in env-specific values files).
+#         # Injected variables: APPLICATION, COMPONENT, APPLICATION_GROUP, CONTAINER_PORT,
+#         # NAMESPACE, and any VAR_* / SECRET_* values from the values files.
+#         content: |
+#           {
+#             "key": "{{ VAR_EXAMPLE }}"
+#           }
+
+#     # Argo Rollouts configuration. Defaults to standard Deployment when not set or enabled: false.
+#     rollout:
+#       # Set to true to emit an Argo Rollout instead of a Deployment.
+#       # Requires Argo Rollouts controller to be installed.
+#       enabled: false
+#       # Strategy: canary | blueGreen
+#       strategy: canary
+
+#       # Canary strategy options (used when strategy: canary).
+#       # Requires two services defined in the services dict: stable + canary.
+#       canary:
+#         # Key from services dict pointing to the stable service.
+#         stableServiceRef: stable
+#         # Key from services dict pointing to the canary service.
+#         canaryServiceRef: canary
+#         # Rollout steps. See: https://argoproj.github.io/argo-rollouts/features/canary/
+#         steps: []
+#         # Gateway API traffic routing via argoproj-labs/gatewayAPI plugin.
+#         trafficRouting:
+#           enabled: false
+#         # Optional AnalysisTemplate reference for automated promotion/rollback.
+#         analysis: {}
+
+#       # BlueGreen strategy options (used when strategy: blueGreen).
+#       # Requires two services defined in the services dict: active + preview.
+#       blueGreen:
+#         # Key from services dict pointing to the active (live) service.
+#         activeServiceRef: active
+#         # Key from services dict pointing to the preview service.
+#         previewServiceRef: preview
+#         # Automatically promote after all steps complete. Defaults to false (manual).
+#         autoPromotionEnabled: false
+#         # Seconds to wait before scaling down the old ReplicaSet after promotion.
+#         scaleDownDelaySeconds: 30
+#         # Optional AnalysisTemplate run before promotion.
+#         prePromotionAnalysis: {}
+#         # Optional AnalysisTemplate run after promotion.
+#         postPromotionAnalysis: {}

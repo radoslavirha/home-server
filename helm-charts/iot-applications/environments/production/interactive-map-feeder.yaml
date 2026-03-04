@@ -1,6 +1,0 @@
-apps:
-  interactive-map-feeder:
-    replicas: 2
-    templates:
-      config:
-        template: environments/production/config/interactive-map-feeder.json
