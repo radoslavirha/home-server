@@ -16,7 +16,7 @@ apps:
               "publicURL": "{{ VAR_PROTOCOL }}://{{ COMPONENT }}.{{ VAR_PUBLIC_DOMAIN }}/{{ APPLICATION_GROUP }}/{{ APPLICATION }}",
               "cachePath": "./cache",
               "udp": {
-                  "enabled": false,
+                  "enabled": true,
                   "port": {{ CONTAINER_UDP_PORT }}
               },
               "polling": {
