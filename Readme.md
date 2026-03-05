@@ -23,3 +23,5 @@ Using
   - Managed by Argo CD
 - [Kubernetes Dashboard](https://artifacthub.io/packages/helm/k8s-dashboard/kubernetes-dashboard)
   - Managed by Argo CD
+- [EMQX](https://artifacthub.io/packages/helm/emqx-operator/emqx)
+  - Managed by Argo CD
