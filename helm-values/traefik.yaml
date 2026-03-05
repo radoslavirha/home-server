@@ -2,7 +2,6 @@ hostNetwork: true
 ports:
   web:
     port: 80
-  metrics: null
   udp-miot-prod:
     port: 4000
     protocol: UDP
@@ -16,6 +15,12 @@ ports:
     protocol: UDP
     expose:
       default: false
+  mqtt:
+    port: 1883
+    protocol: TCP
+    expose:
+      default: true
+  metrics: null
 
 api:
   dashboard: true

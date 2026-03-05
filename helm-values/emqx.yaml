@@ -1,0 +1,12 @@
+replicaCount: 1
+
+envFromSecret: "emqx-credentials"
+
+service:
+  type: ClusterIP
+
+ingress:
+  enabled: false
+
+persistence:
+  enabled: true
