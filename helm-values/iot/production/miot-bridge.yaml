@@ -19,6 +19,13 @@ apps:
                   "enabled": true,
                   "port": {{ CONTAINER_UDP_PORT }}
               },
+              "mqtt": {
+                  "enabled": true,
+                  "url": "{{ VAR_MQTT_URL }}",
+                  "clientId": "miot-bridge-production",
+                  "username": "{{ SECRET_MQTT_MIOT_BRIDGE_USERNAME }}",
+                  "password": "{{ SECRET_MQTT_MIOT_BRIDGE_PASSWORD }}"
+              },
               "polling": {
                   "enabled": true,
                   "intervalMs": 5000,

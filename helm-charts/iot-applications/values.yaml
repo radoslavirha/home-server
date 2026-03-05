@@ -84,6 +84,17 @@
 #             "key": "{{ VAR_EXAMPLE }}"
 #           }
 
+#     # List of Kubernetes Secret names whose keys are injected into:
+#     #   - the Jinja2 init container as JINJA_VAR_{key} env vars (for config file rendering)
+#     #   - the main application container directly (for runtime access)
+#     # Secret keys must follow the SECRET_* naming convention (e.g. SECRET_MQTT_MIOT_BRIDGE_USERNAME).
+#     # Use the keys list to explicitly declare which keys from the Secret are injected.
+#     secretRefs:
+#       - name: miot-bridge-mqtt-credentials
+#         keys:
+#           - SECRET_MQTT_MIOT_BRIDGE_USERNAME
+#           - SECRET_MQTT_MIOT_BRIDGE_PASSWORD
+
 #     # Argo Rollouts configuration. Defaults to standard Deployment when not set or enabled: false.
 #     rollout:
 #       # Set to true to emit an Argo Rollout instead of a Deployment.

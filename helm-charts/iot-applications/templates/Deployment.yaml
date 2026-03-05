@@ -47,7 +47,7 @@ spec:
                 value: "/config/{{ $template.file }}"
               {{- /* Prepare VARS for substitution. */}}
               {{- range $key, $value := $.Values | default dict }}
-              {{- if or (hasPrefix "VAR_" $key) (hasPrefix "SECRET_" $key) }}
+              {{- if hasPrefix "VAR_" $key }}
               - name: JINJA_VAR_{{ $key }}
                 value: {{ $value | quote }}
               {{- end }}
@@ -67,6 +67,16 @@ spec:
               {{- end }}
               - name: JINJA_VAR_NAMESPACE
                 value: {{ $.Release.Namespace | quote }}
+              {{- /* Inject values from secretRefs as JINJA_VAR_ prefixed env vars for Jinja2 substitution. */}}
+              {{- range $secretRef := $application.secretRefs | default list }}
+              {{- range $key := $secretRef.keys | default list }}
+              - name: JINJA_VAR_{{ $key }}
+                valueFrom:
+                  secretKeyRef:
+                    name: {{ $secretRef.name }}
+                    key: {{ $key }}
+              {{- end }}
+              {{- end }}
             volumeMounts:
               {{- /* Volume with config template. */}}
               - name: {{ include "iot-applications.identifier" $ctx }}-tpl-in-{{ $templateName }}
@@ -96,6 +106,14 @@ spec:
             limits:
               cpu: {{ $limits.cpu | default "500m" | quote }}
               memory: {{ $limits.memory | default "500Mi" | quote }}
+          {{- if $application.secretRefs | default list | len }}
+          envFrom:
+            {{- /* Mount each secretRef into the main container for runtime access. */}}
+            {{- range $secretRef := $application.secretRefs | default list }}
+            - secretRef:
+                name: {{ $secretRef.name }}
+            {{- end }}
+          {{- end }}
           {{- if $application.templates | default dict | len }}
           volumeMounts:
             {{- /* Add volumes with substituted config files from Jinja2 container. */}}
