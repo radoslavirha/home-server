@@ -1,4 +1,9 @@
 hostNetwork: true
+
+deployment:
+  strategy:
+    type: Recreate
+
 ports:
   web:
     port: 80
