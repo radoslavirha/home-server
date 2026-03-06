@@ -1,0 +1,15 @@
+fullnameOverride: mongodb
+
+architecture: standalone
+useStatefulSet: true
+
+auth:
+  enabled: true
+  existingSecret: mongodb
+
+service:
+  type: ClusterIP
+
+persistence:
+  enabled: true
+  size: 25Gi

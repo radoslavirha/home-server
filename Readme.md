@@ -25,3 +25,5 @@ Using
   - Managed by Argo CD
 - [EMQX](https://artifacthub.io/packages/helm/emqx-operator/emqx)
   - Managed by Argo CD
+- [MongoDB](https://artifacthub.io/packages/helm/bitnami/mongodb)
+  - Managed by Argo CD
