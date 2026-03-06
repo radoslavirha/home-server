@@ -3,7 +3,7 @@ apps:
     udpIngress:
       entrypoint: udp-miot-sbx
     image:
-      tag: 0.2.7
+      tag: 0.3.0
     replicas: 1
     templates:
       config:
