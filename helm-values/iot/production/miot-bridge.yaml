@@ -24,7 +24,8 @@ apps:
                   "url": "{{ VAR_MQTT_URL }}",
                   "clientId": "miot-bridge-production",
                   "username": "{{ SECRET_MQTT_MIOT_BRIDGE_USERNAME }}",
-                  "password": "{{ SECRET_MQTT_MIOT_BRIDGE_PASSWORD }}"
+                  "password": "{{ SECRET_MQTT_MIOT_BRIDGE_PASSWORD }}",
+                  "topicPrefix": "{{ APPLICATION_GROUP }}/"
               },
               "polling": {
                   "enabled": true,
