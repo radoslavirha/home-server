@@ -44,7 +44,7 @@ apps:
                       "address": ""
                   },
                   "mqtt": {
-                      "enabled": false
+                      "enabled": true
                   }
               }
           }
