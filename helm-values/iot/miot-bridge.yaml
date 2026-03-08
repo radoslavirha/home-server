@@ -36,6 +36,11 @@ apps:
         keys:
           - SECRET_MQTT_MIOT_BRIDGE_USERNAME
           - SECRET_MQTT_MIOT_BRIDGE_PASSWORD
+      - name: miot-bridge-mongodb-credentials
+        keys:
+          - SECRET_MONGODB_DATABASE
+          - SECRET_MONGODB_USERNAME
+          - SECRET_MONGODB_PASSWORD
     templates:
       config:
         file: production.json

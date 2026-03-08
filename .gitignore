@@ -1,3 +1,4 @@
 helm-charts/**/environments/**/secrets.yaml
 k8s-manifests/**/Secret.yaml
+k8s-manifests/**/Secret.*.yaml
 local-path-provisioner/local-path-provisioner

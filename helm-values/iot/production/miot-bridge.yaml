@@ -45,5 +45,13 @@ apps:
                   "dispatchOnChange": true,
                   "maxErrorCount": 3,
                   "errorSkipCycles": 20
+              },
+              "mongodb": {
+                  "enabled": false,
+                  "url": "{{ VAR_MONGODB_URL }}/{{ SECRET_MONGODB_DATABASE }}",
+                  "connectionOptions": {
+                      "user": "{{ SECRET_MONGODB_USERNAME }}",
+                      "pass": "{{ SECRET_MONGODB_PASSWORD }}"
+                  }
               }
           }
