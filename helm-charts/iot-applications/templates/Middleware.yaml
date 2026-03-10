@@ -2,6 +2,7 @@
 {{- include "iot-applications.validators.ingress" (dict "ingress" $application.ingress "applicationName" $applicationName) }}
 {{- if $application.ingress.enabled }}
 {{- $ctx := dict "application" $application "name" $applicationName "release" $.Release "chart" $.Chart -}}
+{{- $pathName := $application.ingress.pathName | default $applicationName -}}
 ---
 apiVersion: traefik.io/v1alpha1
 kind: Middleware
@@ -11,6 +12,6 @@ metadata:
 spec:
   stripPrefix:
     prefixes:
-      - /{{ $application.labels.partOf }}/{{ $applicationName }}
+      - /{{ $application.labels.partOf }}/{{ $pathName }}
 {{ end }}
 {{ end }}

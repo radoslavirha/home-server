@@ -55,6 +55,8 @@ spec:
               {{- /* Prepare selected VARS from configuration. */}}
               - name: JINJA_VAR_APPLICATION
                 value: {{ $applicationName | quote }}
+              - name: JINJA_VAR_PATH_NAME
+                value: {{ ($application.ingress.pathName | default $applicationName) | quote }}
               - name: JINJA_VAR_COMPONENT
                 value: {{ $application.labels.component | quote }}
               - name: JINJA_VAR_APPLICATION_GROUP

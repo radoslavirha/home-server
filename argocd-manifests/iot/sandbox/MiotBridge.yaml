@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: api-iot-miot-bridge-sandbox
+  name: miot-bridge-api-iot-sandbox
   namespace: argocd
 spec:
   project: default
@@ -10,7 +10,7 @@ spec:
       targetRevision: HEAD
       path: helm-charts/iot-applications
       helm:
-        releaseName: api-iot-miot-bridge
+        releaseName: miot-bridge-api-iot
         valueFiles:
           - $values/helm-values/iot/miot-bridge.yaml
           - $values/helm-values/iot/sandbox/miot-bridge.yaml

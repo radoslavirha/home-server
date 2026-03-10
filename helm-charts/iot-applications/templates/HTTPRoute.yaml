@@ -4,6 +4,7 @@
 {{- $ctx := dict "application" $application "name" $applicationName "release" $.Release "chart" $.Chart -}}
 {{- $refSvcName := $application.ingress.serviceRef | default "" -}}
 {{- $refSvc := get ($application.services | default dict) $refSvcName | default dict -}}
+{{- $pathName := $application.ingress.pathName | default $applicationName -}}
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
@@ -20,7 +21,7 @@ spec:
     - matches:
         - path:
             type: PathPrefix
-            value: /{{ $application.labels.partOf }}/{{ $applicationName }}
+            value: /{{ $application.labels.partOf }}/{{ $pathName }}
       backendRefs:
         - name: {{ include "iot-applications.identifier" $ctx }}-{{ $refSvcName }}
           port: {{ $refSvc.port | default 80 }}

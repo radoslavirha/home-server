@@ -1,5 +1,5 @@
 apps:
-  interactive-map-feeder:
+  interactive-map-feeder-api:
     image:
       repository: radoslavirha/interactive-map-feeder
       tag: latest
@@ -23,6 +23,7 @@ apps:
     ingress:
       enabled: true
       serviceRef: http
+      pathName: interactive-map-feeder
     templates:
       config:
         file: production.json

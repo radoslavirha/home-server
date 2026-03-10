@@ -1,5 +1,5 @@
 apps:
-  miot-bridge:
+  miot-bridge-api:
     udpIngress:
       entrypoint: udp-miot-sbx
     image:
@@ -13,7 +13,7 @@ apps:
               "server": {
                   "httpPort": {{ CONTAINER_PORT }}
               },
-              "publicURL": "{{ VAR_PROTOCOL }}://{{ VAR_SUBDOMAIN }}.{{ COMPONENT }}.{{ VAR_PUBLIC_DOMAIN }}/{{ APPLICATION_GROUP }}/{{ APPLICATION }}",
+              "publicURL": "{{ VAR_PROTOCOL }}://{{ VAR_SUBDOMAIN }}.{{ COMPONENT }}.{{ VAR_PUBLIC_DOMAIN }}/{{ APPLICATION_GROUP }}/{{ PATH_NAME }}",
               "cachePath": "./cache",
               "http": {
                 "notifications": {
@@ -31,7 +31,7 @@ apps:
               "mqtt": {
                   "enabled": true,
                   "url": "{{ VAR_MQTT_URL }}",
-                  "clientId": "miot-bridge-sandbox",
+                  "clientId": "miot-bridge-api-sandbox",
                   "username": "{{ SECRET_MQTT_MIOT_BRIDGE_USERNAME }}",
                   "password": "{{ SECRET_MQTT_MIOT_BRIDGE_PASSWORD }}",
                   "topicPrefix": "{{ APPLICATION_GROUP }}/{{ NAMESPACE }}/",

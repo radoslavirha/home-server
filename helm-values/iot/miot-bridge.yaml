@@ -1,5 +1,5 @@
 apps:
-  miot-bridge:
+  miot-bridge-api:
     image:
       repository: radoslavirha/miot-bridge
       tag: latest
@@ -28,15 +28,16 @@ apps:
     ingress:
       enabled: true
       serviceRef: http
+      pathName: miot-bridge
     udpIngress:
       enabled: true
       serviceRef: udp
     secretRefs:
-      - name: miot-bridge-mqtt-credentials
+      - name: miot-bridge-api-mqtt-credentials
         keys:
           - SECRET_MQTT_MIOT_BRIDGE_USERNAME
           - SECRET_MQTT_MIOT_BRIDGE_PASSWORD
-      - name: miot-bridge-mongodb-credentials
+      - name: miot-bridge-api-mongodb-credentials
         keys:
           - SECRET_MONGODB_DATABASE
           - SECRET_MONGODB_USERNAME

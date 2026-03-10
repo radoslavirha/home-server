@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: api-iot-interactive-map-feeder-sandbox
+  name: interactive-map-feeder-api-iot-sandbox
   namespace: argocd
 spec:
   project: default
@@ -10,7 +10,7 @@ spec:
       targetRevision: HEAD
       path: helm-charts/iot-applications
       helm:
-        releaseName: api-iot-interactive-map-feeder
+        releaseName: interactive-map-feeder-api-iot
         valueFiles:
           - $values/helm-values/iot/interactive-map-feeder.yaml
           - $values/helm-values/iot/sandbox/interactive-map-feeder.yaml
