@@ -60,7 +60,7 @@ apps:
                   }
               },
               "mongodb": {
-                  "enabled": false,
+                  "enabled": true,
                   "url": "{{ VAR_MONGODB_URL }}/{{ SECRET_MONGODB_DATABASE }}",
                   "connectionOptions": {
                       "user": "{{ SECRET_MONGODB_USERNAME }}",
