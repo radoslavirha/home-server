@@ -1,8 +1,7 @@
 hostNetwork: true
 
-deployment:
-  strategy:
-    type: Recreate
+updateStrategy:
+  type: Recreate
 
 ports:
   web:
