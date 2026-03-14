@@ -3,7 +3,7 @@ apps:
     udpIngress:
       entrypoint: udp-miot-prod
     image:
-      tag: 0.11.0
+      tag: 0.12.0
     replicas: 1
     templates:
       config:
