@@ -1,0 +1,5 @@
+grafana:
+  admin:
+    existingSecret: kube-prometheus-stack-grafana-auth-admin
+    userKey: admin-user
+    passwordKey: admin-password
