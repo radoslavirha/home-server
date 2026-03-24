@@ -53,5 +53,9 @@ apps:
                       "user": "{{ SECRET_MONGODB_USERNAME }}",
                       "pass": "{{ SECRET_MONGODB_PASSWORD }}"
                   }
+              },
+              "logger": {
+                  "enabled": true,
+                  "level": "info"
               }
           }
