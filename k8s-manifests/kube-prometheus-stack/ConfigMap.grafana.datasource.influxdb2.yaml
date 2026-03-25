@@ -15,6 +15,7 @@ data:
         type: influxdb
         access: proxy
         url: http://influxdb2.monitoring.svc.cluster.local
+        basicAuth: false
         jsonData:
           version: Flux
           organization: home-server
