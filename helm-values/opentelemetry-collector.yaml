@@ -1,10 +1,10 @@
 mode: deployment
 
 image:
-  repository: ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-k8s
+  repository: ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib
 
 command:
-  name: otelcol-k8s
+  name: otelcol-contrib
 
 replicaCount: 1
 
