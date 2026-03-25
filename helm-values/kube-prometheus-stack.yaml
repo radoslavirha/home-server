@@ -3,6 +3,16 @@ grafana:
     existingSecret: kube-prometheus-stack-grafana-auth-admin
     userKey: admin-user
     passwordKey: admin-password
+  sidecar:
+    dashboards:
+      enabled: true
+      searchNamespace: monitoring
+    datasources:
+      enabled: true
+      searchNamespace: monitoring
+    alerts:
+      enabled: true
+      searchNamespace: monitoring
   route:
     main:
       enabled: true
