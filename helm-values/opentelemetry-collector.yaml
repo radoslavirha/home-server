@@ -8,8 +8,6 @@ command:
 
 replicaCount: 1
 
-fullnameOverride: otel-collector
-
 ports:
   otlp:
     enabled: true
