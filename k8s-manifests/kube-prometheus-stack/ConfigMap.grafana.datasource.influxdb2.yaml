@@ -4,7 +4,7 @@ metadata:
   name: kube-prometheus-stack-grafana-datasource-influxdb2
   namespace: monitoring
   annotations:
-    argocd.argoproj.io/sync-wave: "50"
+    argocd.argoproj.io/sync-wave: "-50"
   labels:
     grafana_datasource: "1"
 data:
