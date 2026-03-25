@@ -26,6 +26,9 @@ clusterRole:
     - apiGroups: [""]
       resources: ["pods", "namespaces", "nodes"]
       verbs: ["get", "list", "watch"]
+    - apiGroups: ["apps"]
+      resources: ["replicasets"]
+      verbs: ["get", "list", "watch"]
 
 config:
   receivers:

@@ -10,6 +10,7 @@ spec:
       chart: opentelemetry-collector
       targetRevision: 0.147.1
       helm:
+        releaseName: otel-collector
         valueFiles:
           - $values/helm-values/opentelemetry-collector.yaml
           - $values/helm-values/sandbox/opentelemetry-collector.yaml
