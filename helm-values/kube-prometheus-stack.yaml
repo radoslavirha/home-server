@@ -23,3 +23,5 @@ grafana:
       parentRefs:
         - name: traefik-gateway
           namespace: traefik
+  envFromSecrets:
+    - name: kube-prometheus-stack-grafana-auth-datasource-influxdb2

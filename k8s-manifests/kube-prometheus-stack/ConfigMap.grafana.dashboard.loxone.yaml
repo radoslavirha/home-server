@@ -4,7 +4,7 @@ metadata:
   name: kube-prometheus-stack-grafana-dashboard-loxone
   namespace: monitoring
   annotations:
-    argocd.argoproj.io/sync-wave: "-100"
+    argocd.argoproj.io/sync-wave: "-50"
   labels:
     grafana_dashboard: "1"
 data:
