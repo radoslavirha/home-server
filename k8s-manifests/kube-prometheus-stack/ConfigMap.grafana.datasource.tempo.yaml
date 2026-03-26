@@ -12,20 +12,22 @@ data:
     apiVersion: 1
     datasources:
       - name: Tempo
-        uid: P214B5B846CF3925F
+        uid: tempo
         type: tempo
         access: proxy
         url: http://tempo.monitoring.svc.cluster.local:3200
         jsonData:
           tracesToLogsV2:
-            datasourceUid: P8E80F9AEF21F6940
-            spanStartTimeShift: "-1h"
-            spanEndTimeShift: "1h"
+            datasourceUid: loki
             filterByTraceID: true
             filterBySpanID: false
           lokiSearch:
-            datasourceUid: P8E80F9AEF21F6940
+            datasourceUid: loki
+          tracesToMetrics:
+            datasourceUid: prometheus
           nodeGraph:
             enabled: true
           serviceMap:
             datasourceUid: prometheus
+          streamingEnabled:
+            search: true

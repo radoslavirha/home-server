@@ -35,7 +35,7 @@ data:
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "P951FEA4DE68E13C5"
+            "uid": "influxdb2"
           },
           "description": "",
           "fieldConfig": {
@@ -249,7 +249,7 @@ data:
             {
               "datasource": {
                 "type": "influxdb",
-                "uid": "P951FEA4DE68E13C5"
+                "uid": "influxdb2"
               },
               "hide": false,
               "query": "from(bucket:\"${bucket}\")\n|> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n|> filter(fn: (r) => r._measurement == \"loxone_touch\" )\n|> filter(fn: (r) => r._field == \"temperature\")\n|> filter(fn: (r) => r.room =~ /${rooms:regex}/)",
@@ -258,7 +258,7 @@ data:
             {
               "datasource": {
                 "type": "influxdb",
-                "uid": "P951FEA4DE68E13C5"
+                "uid": "influxdb2"
               },
               "hide": false,
               "query": "lastKnown = from(bucket:\"${bucket}\")\n  |> range(start: -14d, stop: v.timeRangeStart)\n  |> filter(fn: (r) => r._measurement == \"loxone_desired\")\n  |> filter(fn: (r) => r._field == \"temperature\")\n  |> filter(fn: (r) => r.room =~ /${rooms:regex}/)\n  |> last()\n\ncurrent = from(bucket:\"${bucket}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"loxone_desired\" )\n  |> filter(fn: (r) => r._field == \"temperature\")\n  |> filter(fn: (r) => r.room =~ /${rooms:regex}/)\n\nunion(tables: [lastKnown, current])\n  |> aggregateWindow(every: 5m, fn: last, createEmpty: true)\n  |> fill(usePrevious: true)",
@@ -267,7 +267,7 @@ data:
             {
               "datasource": {
                 "type": "influxdb",
-                "uid": "P951FEA4DE68E13C5"
+                "uid": "influxdb2"
               },
               "hide": false,
               "query": "from(bucket:\"${bucket}\")\n|> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n|> filter(fn: (r) => r._measurement == \"loxone_valve\" )\n|> filter(fn: (r) => r._field == \"open\")\n|> filter(fn: (r) => r.room =~ /${rooms:regex}/)",
@@ -276,7 +276,7 @@ data:
             {
               "datasource": {
                 "type": "influxdb",
-                "uid": "P951FEA4DE68E13C5"
+                "uid": "influxdb2"
               },
               "hide": false,
               "query": "from(bucket:\"${bucket}\")\n|> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n|> filter(fn: (r) => r._measurement == \"loxone_valve\" )\n|> filter(fn: (r) => r._field == \"temperature\")\n|> filter(fn: (r) => r.room =~ /${rooms:regex}/)",
@@ -289,7 +289,7 @@ data:
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "P951FEA4DE68E13C5"
+            "uid": "influxdb2"
           },
           "description": "",
           "fieldConfig": {
@@ -425,7 +425,7 @@ data:
             {
               "datasource": {
                 "type": "influxdb",
-                "uid": "P951FEA4DE68E13C5"
+                "uid": "influxdb2"
               },
               "query": "from(bucket:\"${bucket}\")\n|> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n|> filter(fn: (r) => r._measurement == \"loxone_touch\" )\n|> filter(fn: (r) => r._field == \"humidity\")\n|> filter(fn: (r) => r.room =~ /${rooms:regex}/)",
               "refId": "A"
@@ -433,7 +433,7 @@ data:
             {
               "datasource": {
                 "type": "influxdb",
-                "uid": "P951FEA4DE68E13C5"
+                "uid": "influxdb2"
               },
               "hide": false,
               "query": "lastKnown = from(bucket:\"${bucket}\")\n  |> range(start: -14d, stop: v.timeRangeStart)\n  |> filter(fn: (r) => r._measurement == \"loxone_desired\")\n  |> filter(fn: (r) => r._field == \"humidity\")\n  |> filter(fn: (r) => r.room =~ /${rooms:regex}/)\n  |> last()\n\ncurrent = from(bucket:\"${bucket}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"loxone_desired\" )\n  |> filter(fn: (r) => r._field == \"humidity\")\n  |> filter(fn: (r) => r.room =~ /${rooms:regex}/)\n\nunion(tables: [lastKnown, current])\n  |> aggregateWindow(every: 5m, fn: last, createEmpty: true)\n  |> fill(usePrevious: true)",
@@ -446,7 +446,7 @@ data:
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "P951FEA4DE68E13C5"
+            "uid": "influxdb2"
           },
           "description": "",
           "fieldConfig": {
@@ -548,7 +548,7 @@ data:
             {
               "datasource": {
                 "type": "influxdb",
-                "uid": "P951FEA4DE68E13C5"
+                "uid": "influxdb2"
               },
               "query": "from(bucket:\"${bucket}\")\n|> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n|> filter(fn: (r) => r._measurement == \"loxone_valve\" )\n|> filter(fn: (r) => r._field == \"battery\")\n|> filter(fn: (r) => r.room =~ /${rooms:regex}/)",
               "refId": "A"
@@ -575,7 +575,7 @@ data:
             },
             "datasource": {
               "type": "influxdb",
-              "uid": "P951FEA4DE68E13C5"
+              "uid": "influxdb2"
             },
             "definition": "import \"influxdata/influxdb/schema\"\nschema.tagValues(bucket: \"loxone\", tag: \"room\")",
             "includeAll": true,
@@ -617,7 +617,7 @@ data:
             },
             "datasource": {
               "type": "influxdb",
-              "uid": "P951FEA4DE68E13C5"
+              "uid": "influxdb2"
             },
             "definition": "import \"array\"\nif \"${longterm}\" == \"true\" then\n  array.from(rows: [{_value: \"loxone_downsample\"}])\nelse\n  array.from(rows: [{_value: \"loxone\"}])",
             "hide": 2,

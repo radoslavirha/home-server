@@ -12,9 +12,16 @@ data:
     apiVersion: 1
     datasources:
       - name: Loki
-        uid: P8E80F9AEF21F6940
+        uid: loki
         type: loki
         access: proxy
         url: http://loki.monitoring.svc.cluster.local:3100
         jsonData:
           maxLines: 1000
+          derivedFields:
+            - datasourceUid: tempo
+              matcherRegex: "trace_id"
+              matcherType: "label"
+              name: "TraceID"
+              urlDisplayLabel: "View Trace"
+              url: '$${__value.raw}'

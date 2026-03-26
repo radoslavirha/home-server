@@ -11,8 +11,8 @@ data:
   influxdb2.yaml: |
     apiVersion: 1
     datasources:
-      - name: InfluxDB
-        uid: P951FEA4DE68E13C5
+      - name: InfluxDB2
+        uid: influxdb2
         type: influxdb
         access: proxy
         url: http://influxdb2.monitoring.svc.cluster.local
