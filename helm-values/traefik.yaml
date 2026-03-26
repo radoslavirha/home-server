@@ -75,7 +75,7 @@ gateway:
 # Enable Observability
 logs:
   general:
-    level: INFO
+    level: DEBUG
     otlp:
       enabled: true
       grpc:
