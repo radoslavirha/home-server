@@ -63,19 +63,19 @@ apps:
                   "metrics": {
                     "enabled": true,
                     "exporter": {
-                      "url": "http://otel-collector-production:4318/v1/metrics"
+                      "url": "http://otel-collector-:4318/v1/metrics"
                     }
                   },
                   "traces": {
                     "enabled": true,
                     "exporter": {
-                      "url": "http://otel-collector-production:4318/v1/traces"
+                      "url": "http://otel-collector-:4318/v1/traces"
                     }
                   },
                   "logs": {
                     "enabled": true,
                     "exporter": {
-                      "url": "http://otel-collector-production:4318/v1/logs"
+                      "url": "http://otel-collector-:4318/v1/logs"
                     }
                   }
                 }

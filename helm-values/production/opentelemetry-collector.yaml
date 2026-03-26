@@ -1,1 +1,2 @@
-fullnameOverride: otel-collector-production
+clusterRole:
+  name: otel-collector-production
