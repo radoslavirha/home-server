@@ -15,5 +15,28 @@ apps:
               "logger": {
                   "enabled": true,
                   "level": "info"
+              },
+              {
+                "otel": {
+                  "debug": true,
+                  "metrics": {
+                    "enabled": true,
+                    "exporter": {
+                      "url": "http://otel-collector-sandbox:4318/v1/metrics"
+                    }
+                  },
+                  "traces": {
+                    "enabled": true,
+                    "exporter": {
+                      "url": "http://otel-collector-sandbox:4318/v1/traces"
+                    }
+                  },
+                  "logs": {
+                    "enabled": true,
+                    "exporter": {
+                      "url": "http://otel-collector-sandbox:4318/v1/logs"
+                    }
+                  }
+                }
               }
           }
