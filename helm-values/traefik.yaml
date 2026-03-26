@@ -80,7 +80,7 @@ logs:
       enabled: true
       grpc:
         enabled: true
-        endpoint: otel-collector.production.svc.cluster.local:4317
+        endpoint: otel-collector-opentelemetry-collector.production.svc.cluster.local:4317
         insecure: true
   # This enables access logs, outputting them to Traefik's standard output by default. The [Access Logs Documentation](https://doc.traefik.io/traefik/observability/access-logs/) covers formatting, filtering, and output options.
   access:
@@ -89,7 +89,7 @@ logs:
       enabled: true
       grpc:
         enabled: true
-        endpoint: otel-collector.production.svc.cluster.local:4317
+        endpoint: otel-collector-opentelemetry-collector.production.svc.cluster.local:4317
         insecure: true
 
 # Traces
@@ -98,7 +98,7 @@ tracing:
     enabled: true
     grpc:
       enabled: true
-      endpoint: otel-collector.production.svc.cluster.local:4317
+      endpoint: otel-collector-opentelemetry-collector.production.svc.cluster.local:4317
       insecure: true
 
 # Metrics via OTLP
@@ -108,7 +108,7 @@ metrics:
     enabled: true
     grpc:
       enabled: true
-      endpoint: otel-collector.production.svc.cluster.local:4317
+      endpoint: otel-collector-opentelemetry-collector.production.svc.cluster.local:4317
       insecure: true
 
 
