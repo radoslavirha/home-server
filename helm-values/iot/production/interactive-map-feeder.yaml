@@ -6,36 +6,34 @@ apps:
     templates:
       config:
         content: |
-          {
-              "serviceName": "{{ APPLICATION }}",
-              "server": {
-                  "httpPort": {{ CONTAINER_PORT }}
-              },
-              "publicURL": "{{ VAR_PROTOCOL }}://{{ COMPONENT }}.{{ VAR_PUBLIC_DOMAIN }}/{{ APPLICATION_GROUP }}/{{ PATH_NAME }}",
-              "logger": {
-                  "enabled": true,
-                  "level": "info"
-              },
-              {
+            {
+                "serviceName": "{{ APPLICATION }}",
+                "server": {
+                    "httpPort": {{ CONTAINER_PORT }}
+                },
+                "publicURL": "{{ VAR_PROTOCOL }}://{{ COMPONENT }}.{{ VAR_PUBLIC_DOMAIN }}/{{ APPLICATION_GROUP }}/{{ PATH_NAME }}",
+                "logger": {
+                    "enabled": true,
+                    "level": "info"
+                },
                 "otel": {
-                  "metrics": {
-                    "enabled": true,
-                    "exporter": {
-                      "url": "http://otel-collector-:4318/v1/metrics"
+                    "metrics": {
+                        "enabled": true,
+                        "exporter": {
+                            "url": "http://otel-collector-:4318/v1/metrics"
+                        }
+                    },
+                    "traces": {
+                        "enabled": true,
+                        "exporter": {
+                            "url": "http://otel-collector-:4318/v1/traces"
+                        }
+                    },
+                    "logs": {
+                        "enabled": true,
+                        "exporter": {
+                            "url": "http://otel-collector-:4318/v1/logs"
+                        }
                     }
-                  },
-                  "traces": {
-                    "enabled": true,
-                    "exporter": {
-                      "url": "http://otel-collector-:4318/v1/traces"
-                    }
-                  },
-                  "logs": {
-                    "enabled": true,
-                    "exporter": {
-                      "url": "http://otel-collector-:4318/v1/logs"
-                    }
-                  }
                 }
-              }
-          }
+            }
