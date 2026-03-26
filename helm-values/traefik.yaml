@@ -1,5 +1,10 @@
 hostNetwork: true
 
+# Required when hostNetwork: true so CoreDNS is still used for *.svc.cluster.local
+# Without this, the host's DNS resolver is used and cluster DNS names don't resolve.
+deployment:
+  dnsPolicy: ClusterFirstWithHostNet
+
 updateStrategy:
   type: Recreate
 
@@ -110,7 +115,6 @@ metrics:
       enabled: true
       endpoint: otel-collector-opentelemetry-collector.production.svc.cluster.local:4317
       insecure: true
-
 
 securityContext:
   capabilities:
