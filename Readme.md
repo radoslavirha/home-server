@@ -19,9 +19,9 @@ Kubernetes-based home server infrastructure with GitOps deployment management.
 | [Sealed Secrets](https://artifacthub.io/packages/helm/bitnami-labs/sealed-secrets) | Secret encryption | - | Auto (ArgoCD) |
 
 ### Ingress & Networking
-| Component | Purpose | Status |
-|-----------|---------|--------|
-| [Traefik](https://artifacthub.io/packages/helm/traefik/traefik) | Ingress controller & reverse proxy | Auto (ArgoCD) |
+| Component | Purpose | Docs | Status |
+|-----------|---------|------|--------|
+| [Traefik](https://artifacthub.io/packages/helm/traefik/traefik) | Ingress controller & reverse proxy | [Install](#traefik) | Auto (ArgoCD) |
 
 ### Databases
 | Component | Purpose | Status |
@@ -79,9 +79,7 @@ helm uninstall argocd -n argocd
 ```
 
 ### Argo Rollouts
-- Managed by Argo CD
 - Requires [kubectl plugin](https://argo-rollouts.readthedocs.io/en/stable/installation/#kubectl-plugin-installation)
 
 ### Traefik
-- Managed by Argo CD
 - Requires [Gateway API](https://doc.traefik.io/traefik/reference/install-configuration/providers/kubernetes/kubernetes-gateway/)
