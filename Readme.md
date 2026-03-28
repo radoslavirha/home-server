@@ -19,38 +19,38 @@ Kubernetes-based home server infrastructure with GitOps deployment management.
 | [Sealed Secrets](https://artifacthub.io/packages/helm/bitnami-labs/sealed-secrets) | Secret encryption | - | Auto (ArgoCD) |
 
 ### Ingress & Networking
-| Component | Purpose | Docs | Status |
-|-----------|---------|------|--------|
-| [Traefik](https://artifacthub.io/packages/helm/traefik/traefik) | Ingress controller & reverse proxy | - | Auto (ArgoCD) |
+| Component | Purpose | Status |
+|-----------|---------|--------|
+| [Traefik](https://artifacthub.io/packages/helm/traefik/traefik) | Ingress controller & reverse proxy | Auto (ArgoCD) |
 
 ### Databases
-| Component | Purpose | Docs | Status |
-|-----------|---------|------|--------|
-| [MongoDB](https://artifacthub.io/packages/helm/bitnami/mongodb) | Document database | - | Auto (ArgoCD) |
-| [InfluxDB 2](https://artifacthub.io/packages/helm/influxdata/influxdb2) | Time series database | - | Auto (ArgoCD) |
+| Component | Purpose | Status |
+|-----------|---------|--------|
+| [MongoDB](https://artifacthub.io/packages/helm/bitnami/mongodb) | Document database | Auto (ArgoCD) |
+| [InfluxDB 2](https://artifacthub.io/packages/helm/influxdata/influxdb2) | Time series database | Auto (ArgoCD) |
 
 ### Monitoring & Observability
-| Component | Purpose | Docs | Status |
-|-----------|---------|------|--------|
-| [kube-prometheus-stack](https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack) | Prometheus + Grafana + AlertManager | - | Auto (ArgoCD) |
-| [Loki](https://artifacthub.io/packages/helm/grafana-community/loki) | Log aggregation | - | Auto (ArgoCD) |
-| [Tempo](https://artifacthub.io/packages/helm/grafana-community/tempo) | Distributed tracing | - | Auto (ArgoCD) |
-| [OpenTelemetry Collector](https://artifacthub.io/packages/helm/opentelemetry-helm/opentelemetry-collector) | Telemetry collection & export | - | Auto (ArgoCD) |
+| Component | Purpose | Status |
+|-----------|---------|--------|
+| [kube-prometheus-stack](https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack) | Prometheus + Grafana + AlertManager | Auto (ArgoCD) |
+| [Loki](https://artifacthub.io/packages/helm/grafana-community/loki) | Log aggregation | Auto (ArgoCD) |
+| [Tempo](https://artifacthub.io/packages/helm/grafana-community/tempo) | Distributed tracing | Auto (ArgoCD) |
+| [OpenTelemetry Collector](https://artifacthub.io/packages/helm/opentelemetry-helm/opentelemetry-collector) | Telemetry collection & export | Auto (ArgoCD) |
 
 ### Message Queue & IoT
-| Component | Purpose | Docs | Status |
-|-----------|---------|------|--------|
-| [EMQX](https://artifacthub.io/packages/helm/emqx-operator/emqx) | MQTT broker | - | Auto (ArgoCD) |
+| Component | Purpose | Status |
+|-----------|---------|--------|
+| [EMQX](https://artifacthub.io/packages/helm/emqx-operator/emqx) | MQTT broker | Auto (ArgoCD) |
 
 ## Applications
 
 ### IoT Miniservers
 Custom IoT and integration services deployed on the cluster.
 
-| Service | Status |
-|---------|--------|
-|[Interactive Map Feeder](https://github.com/radoslavirha/iot-miniservers/tree/main/apis/interactive-map-feeder) | Auto (ArgoCD) |
-|[MIoT Bridge](https://github.com/radoslavirha/iot-miniservers/tree/main/apis/miot-bridge) | Auto (ArgoCD) |
+| Service | Purpose | Status |
+|---------|---------|--------|
+|[Interactive Map Feeder](https://github.com/radoslavirha/iot-miniservers/tree/main/apis/interactive-map-feeder) | Data Feeder for LaskaKit interactive map of Czech republic | Auto (ArgoCD) |
+|[MIoT Bridge](https://github.com/radoslavirha/iot-miniservers/tree/main/apis/miot-bridge) | Loxone <-> MIoT (Xiaomi) devices bridge on local network | Auto (ArgoCD) |
 
 ## Installation & Setup
 
