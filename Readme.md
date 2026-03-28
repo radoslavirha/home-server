@@ -42,6 +42,16 @@ Kubernetes-based home server infrastructure with GitOps deployment management.
 |-----------|---------|------|--------|
 | [EMQX](https://artifacthub.io/packages/helm/emqx-operator/emqx) | MQTT broker | - | Auto (ArgoCD) |
 
+## Applications
+
+### IoT Miniservers
+Custom IoT and integration services deployed on the cluster.
+
+| Service | Status |
+|---------|--------|
+|[Interactive Map Feeder](https://github.com/radoslavirha/iot-miniservers/tree/main/apis/interactive-map-feeder) | Auto (ArgoCD) |
+|[MIoT Bridge](https://github.com/radoslavirha/iot-miniservers/tree/main/apis/miot-bridge) | Auto (ArgoCD) |
+
 ## Installation & Setup
 
 ### Local Path Provisioner
