@@ -80,7 +80,7 @@ gateway:
 # Enable Observability
 logs:
   general:
-    level: DEBUG
+    level: INFO
     otlp:
       enabled: true
       grpc:
