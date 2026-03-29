@@ -41,6 +41,7 @@ Kubernetes-based home server infrastructure with GitOps deployment management.
 | Component | Purpose | Status |
 |-----------|---------|--------|
 | [EMQX](https://artifacthub.io/packages/helm/emqx-operator/emqx) | MQTT broker | Auto (ArgoCD) |
+| [Telegraf](https://artifacthub.io/packages/helm/influxdata/telegraf) | MQTT ingestion — accepts IoT data over MQTT and writes to InfluxDB | Auto (ArgoCD) |
 
 ## Applications
 
