@@ -67,6 +67,10 @@ providers:
     namespaces: []
   kubernetesGateway:
     enabled: true
+    statusAddress:
+      service:
+        name: traefik
+        namespace: traefik
 
 ## Gateway Listeners
 gateway:
