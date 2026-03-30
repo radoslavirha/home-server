@@ -25,11 +25,12 @@ provider:
       initialDelaySeconds: 10
       periodSeconds: 10
 
-# Watch Gateway API HTTPRoutes for hostnames.
-# Hostnames come from spec.hostnames; target IP comes from Gateway status.addresses
-# (populated by Traefik via providers.kubernetesGateway.statusAddress.service).
+# Watch Gateway API HTTPRoutes and Traefik IngressRoute CRDs for hostnames.
+# Hostnames from HTTPRoutes come from spec.hostnames; from IngressRoutes via Host() match rule.
+# Target IP comes from Gateway status.addresses (set via statusAddress.ip in traefik helm values).
 sources:
   - gateway-httproute
+  - traefik-proxy
 
 # Only manage records under server.home
 domainFilters:

@@ -43,11 +43,20 @@ api:
 ingressRoute:
   dashboard:
     enabled: true
-    matchRule: Host(`traefik.server.home`)
-    entryPoints:
-      - web
+    # Custom match rule with Host() so external-dns traefik-proxy source can extract the hostname.
+    # The default rule only has PathPrefix, which gives external-dns nothing to work with.
+    matchRule: "Host(`traefik.server.home`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))"
+    annotations:
+      # traefik-proxy source resolves target from status.loadBalancer.ingress by default.
+      # Since the Traefik Service is ClusterIP (no LB), that is always empty.
+      # Provide the target IP explicitly so external-dns can create the A record.
+      external-dns.alpha.kubernetes.io/target: "192.168.1.200"
 
 service:
+  # ClusterIP + externalIPs is the correct pattern for bare metal.
+  # LoadBalancer (default) waits for status.loadBalancer.ingress which a bare metal cluster
+  # never populates, causing ArgoCD to mark the Service as Progressing forever.
+  type: ClusterIP
   externalIPs:
     - 192.168.1.200
 
