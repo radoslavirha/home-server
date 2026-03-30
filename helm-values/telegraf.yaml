@@ -62,7 +62,7 @@ config:
     - influxdb_v2:
         urls:
           - "http://influxdb2.monitoring.svc.cluster.local"
-        bucket: "loxone-mqtt"
+        bucket: "loxone"
         organization: "home-server"
         token: "$INFLUXDB2_TOKEN"
         tagpass:
