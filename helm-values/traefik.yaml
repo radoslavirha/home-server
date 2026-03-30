@@ -49,7 +49,7 @@ ingressRoute:
 
 service:
   externalIPs:
-    - 192.168.0.200
+    - 192.168.1.200
 
 # We will route with Gateway API instead.
 ingressClass:
@@ -68,9 +68,10 @@ providers:
   kubernetesGateway:
     enabled: true
     statusAddress:
-      service:
-        name: traefik
-        namespace: traefik
+      # The Traefik Service uses externalIPs (not LoadBalancer), so status.loadBalancer is empty
+      # and statusAddress.service would never populate Gateway status.addresses.
+      # Use a static IP instead so external-dns can resolve HTTPRoute target addresses.
+      ip: "192.168.1.200"
 
 ## Gateway Listeners
 gateway:

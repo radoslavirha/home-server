@@ -22,6 +22,7 @@ Kubernetes-based home server infrastructure with GitOps deployment management.
 | Component | Purpose | Docs | Status |
 |-----------|---------|------|--------|
 | [Traefik](https://artifacthub.io/packages/helm/traefik/traefik) | Ingress controller & reverse proxy | [Install](#traefik) | Auto (ArgoCD) |
+| [external-dns](https://artifacthub.io/packages/helm/external-dns/external-dns) | Automatic DNS provisioning in UniFi via HTTPRoute discovery | - | Auto (ArgoCD) |
 
 ### Databases
 | Component | Purpose | Status |

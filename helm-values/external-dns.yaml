@@ -1,0 +1,48 @@
+provider:
+  name: webhook
+  webhook:
+    image:
+      repository: ghcr.io/lexfrei/external-dns-unifios-webhook
+      tag: "0.2.2"
+    env:
+      - name: WEBHOOK_UNIFI_HOST
+        value: "https://192.168.1.1"
+      - name: WEBHOOK_UNIFI_API_KEY
+        valueFrom:
+          secretKeyRef:
+            name: unifi-credentials
+            key: api-key
+    livenessProbe:
+      httpGet:
+        path: /healthz
+        port: 8080
+      initialDelaySeconds: 10
+      periodSeconds: 10
+    readinessProbe:
+      httpGet:
+        path: /readyz
+        port: 8080
+      initialDelaySeconds: 10
+      periodSeconds: 10
+
+# Watch Gateway API HTTPRoutes for hostnames.
+# Hostnames come from spec.hostnames; target IP comes from Gateway status.addresses
+# (populated by Traefik via providers.kubernetesGateway.statusAddress.service).
+sources:
+  - gateway-httproute
+
+# Only manage records under server.home
+domainFilters:
+  - server.home
+
+# Safe starting policy — only creates/updates, never deletes
+policy: upsert-only
+
+# TXT registry tracks ownership of created records
+registry: txt
+txtOwnerId: home-server
+
+# React immediately to HTTPRoute create/update/delete events
+triggerLoopOnEvent: true
+
+interval: 1m
