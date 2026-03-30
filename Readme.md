@@ -17,6 +17,7 @@ Kubernetes-based home server infrastructure with GitOps deployment management.
 | [Argo CD](https://artifacthub.io/packages/helm/argo-cd-oci/argo-cd) | GitOps deployment | [Setup](#argo-cd) | Manual |
 | [Argo Rollouts](https://artifacthub.io/packages/helm/argo/argo-rollouts) | Advanced deployment strategies | [Install](#argo-rollouts) | Auto (ArgoCD) |
 | [Sealed Secrets](https://artifacthub.io/packages/helm/bitnami-labs/sealed-secrets) | Secret encryption | - | Auto (ArgoCD) |
+| [Headlamp](https://artifacthub.io/packages/helm/headlamp/headlamp) | Kubernetes web UI | - | Auto (ArgoCD) |
 
 ### Ingress & Networking
 | Component | Purpose | Docs | Status |
