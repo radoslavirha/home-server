@@ -1,0 +1,47 @@
+# Cilium CNI — single-node cluster, native routing (no overlay), full kube-proxy replacement
+# Chart: https://helm.cilium.io/ — cilium/cilium
+
+# ---- Routing: native (no VXLAN overlay, single node has no need for tunneling) ----
+routingMode: native
+autoDirectNodeRoutes: true
+ipv4NativeRoutingCIDR: "10.244.0.0/24"   # Must match existing pod CIDR from Flannel/kubeadm
+devices: "eno1"   # Primary interface for Cilium (verified from ip route | grep default)
+
+# ---- IPAM: let Kubernetes assign pod CIDRs (consistent with kubeadm setup) ----
+ipam:
+  mode: kubernetes
+
+# ---- kube-proxy replacement ----
+kubeProxyReplacement: true
+k8sServiceHost: "192.168.1.200"   # API server host (replace kube-proxy iptables rules)
+k8sServicePort: 6443
+
+# ---- Single-node: only 1 operator replica needed ----
+operator:
+  replicas: 1
+
+# ---- Hubble: L7 observability + Prometheus metrics ----
+hubble:
+  enabled: true
+  metrics:
+    enabled:
+      - dns
+      - drop
+      - tcp
+      - flow
+      - icmp
+      - http
+    serviceMonitor:
+      enabled: false   # Set to true if kube-prometheus-stack CRDs are available
+  relay:
+    enabled: true
+  ui:
+    enabled: true
+    service:
+      type: ClusterIP
+
+# ---- Prometheus metrics from Cilium agent ----
+prometheus:
+  enabled: true
+  serviceMonitor:
+    enabled: false   # Set to true after kube-prometheus-stack is confirmed healthy post-migration

@@ -8,8 +8,8 @@ Kubernetes-based home server infrastructure with GitOps deployment management.
 | Component | Purpose | Docs | Status |
 |-----------|---------|------|--------|
 | [Helm](https://helm.sh/docs/intro/install/) | Package management | v3 | Manual |
-| [Flannel](https://mvallim.github.io/kubernetes-under-the-hood/documentation/kube-flannel.html) | Container networking | - | Auto (ArgoCD) |
-| [Local Path Provisioner](https://github.com/rancher/local-path-provisioner) | Storage provisioning | [Setup](#local-path-provisioner) | Manual |
+| [Cilium](https://docs.cilium.io/) | Container networking (eBPF, kube-proxy replacement, Hubble) | [Bootstrap](#cilium) | Manual |
+| [Local Path Provisioner](https://github.com/rancher/local-path-provisioner) | Storage provisioning (pre-Longhorn) | [Setup](#local-path-provisioner) | Manual |
 
 ### GitOps & Deployment
 | Component | Purpose | Docs | Status |
@@ -57,6 +57,19 @@ Custom IoT and integration services deployed on the cluster.
 
 ## Installation & Setup
 
+### Cilium
+```bash
+# Add repo if not already done
+helm repo add cilium https://helm.cilium.io
+helm repo update
+
+# Install Cilium into kube-system with values from this repo
+helm install cilium cilium/cilium \
+  --version 1.19.2 \
+  --namespace kube-system \
+  --values helm-values/cilium.yaml
+```
+
 ### Local Path Provisioner
 ```bash
 # Clone into local-path-provisioner directory
@@ -83,6 +96,3 @@ helm uninstall argocd -n argocd
 
 ### Argo Rollouts
 - Requires [kubectl plugin](https://argo-rollouts.readthedocs.io/en/stable/installation/#kubectl-plugin-installation)
-
-### Traefik
-- Requires [Gateway API](https://doc.traefik.io/traefik/reference/install-configuration/providers/kubernetes/kubernetes-gateway/)
