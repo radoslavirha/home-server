@@ -33,6 +33,6 @@ server:
     rules:
       - matches:
           - headers:
-            - name: Content-Type
-              type: RegularExpression
-              value: "^application/grpc.*$"
+              - name: Content-Type
+                type: RegularExpression
+                value: "^application/grpc.*$"
