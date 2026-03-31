@@ -8,7 +8,7 @@ Kubernetes-based home server infrastructure with GitOps deployment management.
 | Component | Purpose | Docs | Status |
 |-----------|---------|------|--------|
 | [Helm](https://helm.sh/docs/intro/install/) | Package management | v3 | Manual |
-| [Cilium](https://docs.cilium.io/) | Container networking (eBPF, kube-proxy replacement, Hubble) | [Bootstrap](#cilium) | Manual |
+| [Cilium](https://docs.cilium.io/) | Container networking (eBPF, kube-proxy replacement, Hubble observability) | [Bootstrap](#cilium) | Manual (Helm) — HTTPRoute via ArgoCD |
 | [Local Path Provisioner](https://github.com/rancher/local-path-provisioner) | Storage provisioning (pre-Longhorn) | [Setup](#local-path-provisioner) | Manual |
 
 ### GitOps & Deployment
@@ -34,6 +34,7 @@ Kubernetes-based home server infrastructure with GitOps deployment management.
 ### Monitoring & Observability
 | Component | Purpose | Status |
 |-----------|---------|--------|
+| [Hubble UI](https://docs.cilium.io/en/stable/gettingstarted/hubble_setup/) | Cilium network observability — L7 traffic visibility and flow monitoring | Auto (ArgoCD) |
 | [kube-prometheus-stack](https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack) | Prometheus + Grafana + AlertManager | Auto (ArgoCD) |
 | [Loki](https://artifacthub.io/packages/helm/grafana-community/loki) | Log aggregation | Auto (ArgoCD) |
 | [Tempo](https://artifacthub.io/packages/helm/grafana-community/tempo) | Distributed tracing | Auto (ArgoCD) |
