@@ -46,7 +46,7 @@ ingressRoute:
     # Custom match rule with Host() so external-dns traefik-proxy source can extract the hostname.
     # The default rule only has PathPrefix, which gives external-dns nothing to work with.
     matchRule: "Host(`traefik.server.home`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))"
-    entryPoint: web
+    entryPoints: [web]
     annotations:
       # traefik-proxy source resolves target from status.loadBalancer.ingress by default.
       # Since the Traefik Service is ClusterIP (no LB), that is always empty.
