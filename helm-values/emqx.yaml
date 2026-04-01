@@ -10,6 +10,7 @@ ingress:
 
 persistence:
   enabled: true
+  storageClass: "longhorn"
 
 emqxConfig:
   EMQX_rule_engine__rules__LOXONE_MIOT_NOTIFICATION:
