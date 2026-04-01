@@ -21,6 +21,8 @@ singleBinary:
   persistence:
     enabled: true
     storageClass: "longhorn"
+    whenScaled: Retain
+    whenDeleted: Retain
 
 read:
   replicas: 0
