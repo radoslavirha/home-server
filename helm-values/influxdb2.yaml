@@ -12,3 +12,4 @@ ingress:
 
 persistence:
   enabled: true
+  storageClass: "longhorn"

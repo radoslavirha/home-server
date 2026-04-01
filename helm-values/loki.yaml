@@ -18,6 +18,9 @@ deploymentMode: SingleBinary
 
 singleBinary:
   replicas: 1
+  persistence:
+    enabled: true
+    storageClass: "longhorn"
 
 read:
   replicas: 0
