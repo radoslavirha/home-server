@@ -12,5 +12,5 @@ service:
 
 persistence:
   enabled: true
-  size: 25Gi
+  size: 10Gi
   storageClass: "longhorn"
