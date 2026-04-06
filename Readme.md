@@ -9,7 +9,6 @@ Kubernetes-based home server infrastructure with GitOps deployment management.
 |-----------|---------|------|--------|
 | [Helm](https://helm.sh/docs/intro/install/) | Package management | v3 | Manual |
 | [Cilium](https://docs.cilium.io/) | Container networking (eBPF, kube-proxy replacement, Hubble observability) | [Bootstrap](#cilium) | Manual (Helm) — HTTPRoute via ArgoCD |
-| [Local Path Provisioner](https://github.com/rancher/local-path-provisioner) | Storage provisioning (pre-Longhorn) | [Setup](#local-path-provisioner) | Manual |
 | [Longhorn](https://artifacthub.io/packages/helm/longhorn/longhorn) | Storage provisioning | [Setup](#longhorn) | Manual |
 
 ### GitOps & Deployment
