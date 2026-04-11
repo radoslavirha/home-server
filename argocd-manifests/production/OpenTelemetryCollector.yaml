@@ -14,7 +14,7 @@ spec:
         valueFiles:
           - $values/helm-values/opentelemetry-collector.yaml
           - $values/helm-values/production/opentelemetry-collector.yaml
-    - repoURL: https://github.com/radoslavirha/home-server.git
+    - repoURL: https://github.com/radoslavirha/home-server
       targetRevision: HEAD
       ref: values
   destination:

@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   sources:
-    - repoURL: https://github.com/radoslavirha/home-server.git
+    - repoURL: https://github.com/radoslavirha/home-server
       targetRevision: HEAD
       path: k8s-manifests/longhorn
   destination:

@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   sources:
-    - repoURL: https://github.com/radoslavirha/home-server.git
+    - repoURL: https://github.com/radoslavirha/home-server
       targetRevision: HEAD
       path: helm-charts/iot-applications
       helm:
@@ -15,10 +15,10 @@ spec:
           - $values/helm-values/iot/miot-bridge.yaml
           - $values/helm-values/iot/production/miot-bridge.yaml
           - $values/helm-values/iot/production/variables.yaml
-    - repoURL: https://github.com/radoslavirha/home-server.git
+    - repoURL: https://github.com/radoslavirha/home-server
       targetRevision: HEAD
       ref: values
-    - repoURL: https://github.com/radoslavirha/home-server.git
+    - repoURL: https://github.com/radoslavirha/home-server
       targetRevision: HEAD
       path: k8s-manifests/iot/production
   destination:
